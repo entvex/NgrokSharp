@@ -26,7 +26,7 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public void ngrokManager_ChecksDownload_True()
+        public void DownloadNgrok_CheckIfngrokEXEIsDownloaded_True()
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
@@ -49,7 +49,7 @@ namespace NgrokSharp.Tests
         }
         
         [Fact]
-        public void ngrokManager_StartNgrok_True()
+        public void StartNgrok_ShouldStartNgrok_True()
         {
             // ARRANGE
             WebClient webClient = new WebClient();
@@ -74,7 +74,7 @@ namespace NgrokSharp.Tests
         }
         
         [Fact]
-        public async void ngrokManager_StartTunnel8080_True()
+        public async void StartTunnel_StartTunnel8080_True()
         {
             // ARRANGE
             WebClient webClient = new WebClient();
@@ -107,5 +107,31 @@ namespace NgrokSharp.Tests
 
             Assert.Contains("http://localhost:30000", downloadedString);
         }
+        
+        [Fact]
+        public async void RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+
+            // ASSERT
+            
+            var ex = Assert.Throws<Exception>(() => ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") );
+            
+            Assert.Equal("The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.",ex.Message);
+        }
+        
     }
 }
