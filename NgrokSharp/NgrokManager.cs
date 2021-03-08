@@ -66,13 +66,26 @@ namespace NgrokSharp
 
         public void RegisterAuthToken(string authtoken)
         {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName =   "ngrok.exe";
-            startInfo.Arguments = $"authtoken {authtoken}";
-            process.StartInfo = startInfo;
-            process.Start();
+
+            if (_process != null)
+            {
+                _process.Refresh();
+                if (_process.HasExited)
+                {
+                    Process process = new Process();
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = true;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.FileName = "ngrok.exe";
+                    startInfo.Arguments = $"authtoken {authtoken}";
+                    process.StartInfo = startInfo;
+                    process.Start();
+                }
+                else
+                {
+                    throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
+                }
+            }
         }
 
         public void StartNgrok()
