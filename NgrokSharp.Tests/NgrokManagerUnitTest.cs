@@ -43,7 +43,7 @@ namespace NgrokSharp.Tests
             // ASSERT
             
             
-            var wasSignaled = are.WaitOne(timeout: TimeSpan.FromSeconds(30));
+            are.WaitOne(TimeSpan.FromSeconds(30));
             
             Assert.True(File.Exists("ngrok.exe"));
         }
@@ -99,13 +99,139 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
             
-            var startTunnel = await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnel(startTunnelDto);
 
             // ASSERT
 
             var downloadedString = webClient.DownloadString("http://localhost:4040/api/tunnels/foundryvtt");
 
             Assert.Contains("http://localhost:30000", downloadedString);
+        }
+        
+        [Fact]
+        public async System.Threading.Tasks.Task StartTunnel_MissingAddrArgumentNullException_True()
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "",
+                bind_tls = "false"
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto) );
+
+            // ASSERT
+
+            Assert.Equal("Value cannot be null or whitespace. (Parameter 'addr')",ex.Message);
+        }
+        
+        [Fact]
+        public async System.Threading.Tasks.Task StartTunnel_MissingNameArgumentNullException_True()
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "",
+                proto = "http",
+                addr = "8080",
+                bind_tls = "false"
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto) );
+
+            // ASSERT
+
+            Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')",ex.Message);
+        }
+        
+        [Fact]
+        public async System.Threading.Tasks.Task StartTunnel_MissingProtoArgumentNullException_True()
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "",
+                addr = "8080",
+                bind_tls = "false"
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto) );
+
+            // ASSERT
+
+            Assert.Equal("Value cannot be null or whitespace. (Parameter 'proto')",ex.Message);
+        }
+        
+        [Fact]
+        public async System.Threading.Tasks.Task StartTunnel_StartTunnelDTOIsNullArgumentNullException_True()
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+
+            StartTunnelDTO startTunnelDto = null;
+
+            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => ngrokManager.StartTunnel(startTunnelDto) );
+
+            // ASSERT
+
+            Assert.Equal("Value cannot be null. (Parameter 'startTunnelDto')",ex.Message);
         }
         
         [Fact]
@@ -124,6 +250,7 @@ namespace NgrokSharp.Tests
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
+            
             ngrokManager.StartNgrok();
 
             // ASSERT
@@ -131,6 +258,39 @@ namespace NgrokSharp.Tests
             var ex = Assert.Throws<Exception>(() => ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") );
             
             Assert.Equal("The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.",ex.Message);
+        }
+        
+        [Fact]
+        public async void RegisterAuthToken_AddNewAuthTokenAfterStop_True()
+        {
+            // ARRANGE
+            var are = new AutoResetEvent(false);
+            
+            WebClient webClient = new WebClient();
+            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            ngrokManager.StartNgrok();
+            
+            // ACT
+            
+            ngrokManager.StopNgrok();
+            
+            ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+            
+            // ASSERT
+            are.WaitOne(TimeSpan.FromSeconds(1)); // wait for the ngrok process to start and write the file
+            var readAllText = File.ReadAllText($"{path.FullName}\\ngrok.yml");
+
+            Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n",readAllText);
         }
         
     }
