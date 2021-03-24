@@ -13,6 +13,6 @@ namespace NgrokSharp
         void StopNgrok();
         Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto);
         Task<int> StopTunnel(string name);
-        Task<int> ListTunnels();
+        Task<HttpResponseMessage> ListTunnels();
     }
 }

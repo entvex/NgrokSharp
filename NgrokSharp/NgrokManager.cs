@@ -144,11 +144,11 @@ namespace NgrokSharp
             return (int)httpResponseMessage.StatusCode;
         }
 
-        public async Task<int> ListTunnels()
+        public async Task<HttpResponseMessage> ListTunnels()
         {
             var httpResponseMessage = await _httpClient.GetAsync($"{_ngrokLocalUrl}/tunnels");
 
-            return (int)httpResponseMessage.StatusCode;
+            return httpResponseMessage;
         }
     }
 }
