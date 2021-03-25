@@ -9,7 +9,7 @@ namespace NgrokSharp
         event EventHandler DownloadAndUnZipDone;
         void DownloadNgrok();
         void RegisterAuthToken(string authtoken);
-        void StartNgrok();
+        void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();
         Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto);
         Task<int> StopTunnel(string name);

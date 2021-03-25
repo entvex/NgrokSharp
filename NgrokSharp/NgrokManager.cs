@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -84,8 +86,22 @@ namespace NgrokSharp
 
         }
 
-        public void StartNgrok()
+        public void StartNgrok(Region region = Region.UnitedStates)
         {
+            
+            Dictionary<Region, string> regions = new Dictionary<Region, string>
+            {
+                {Region.UnitedStates, "us"},
+                {Region.Europe, "eu"},
+                {Region.AsiaPacific, "ap"},
+                {Region.Australia, "au"},
+                {Region.SouthAmerica, "sa"},
+                {Region.Japan, "jp"},
+                {Region.India, "in"}
+            };
+            
+            var selectedRegion = regions.First(x => x.Key == region).Value;
+
             _process = new Process
             {
                 StartInfo =
@@ -96,7 +112,7 @@ namespace NgrokSharp
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     FileName = "ngrok.exe",
-                    Arguments = "start --none"
+                    Arguments = $"start --none -region {selectedRegion}"
                 }
             };
 
@@ -150,5 +166,20 @@ namespace NgrokSharp
 
             return httpResponseMessage;
         }
+
+        /// <summary>
+        /// Configure one of the supported to be used. https://ngrok.com/docs#global-locations
+        /// </summary>
+        public enum Region
+        {
+            UnitedStates,
+            Europe,
+            AsiaPacific,
+            Australia,
+            SouthAmerica,
+            Japan,
+            India
+        }
+        
     }
 }

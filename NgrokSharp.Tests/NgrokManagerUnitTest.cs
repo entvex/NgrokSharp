@@ -11,11 +11,12 @@ namespace NgrokSharp.Tests
 {
     public class NgrokManagerUnitTest : IClassFixture<NgrokManagerOneTimeSetUp>, IDisposable
     {
-        string ngrokYml = "authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        
+        string _ngrokYml = "authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        private byte[] _ngrokBytes;
         public NgrokManagerUnitTest(NgrokManagerOneTimeSetUp ngrokManagerOneTimeSetUp)
         {
-            ngrokYml = ngrokManagerOneTimeSetUp.environmentVariableNgrokYml;
+            _ngrokYml = ngrokManagerOneTimeSetUp.environmentVariableNgrokYml;
+            _ngrokBytes = ngrokManagerOneTimeSetUp.ngrokBytes;
         }
 
         public void Dispose()
@@ -24,6 +25,11 @@ namespace NgrokSharp.Tests
             {
                 process.Kill();
             }
+            //Because ngrok is only downloaded once in NgrokManagerOneTimeSetUp.
+            //The File.WriteAllBytes method, can sometimes fail due killing the process and writing a new one, due to slow IO on some systems.
+            //Even though I don't like it. It is a trade off between downloading ngrok every test or handling slow IO on some systems.
+            //I choose to handle slow IO, and not download in every test. That is why the sleep is need here!  
+            Thread.Sleep(100);
         }
 
         [Fact]
@@ -54,14 +60,14 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -79,14 +85,14 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -113,15 +119,14 @@ namespace NgrokSharp.Tests
         public async System.Threading.Tasks.Task StartTunnel_MissingAddrArgumentNullException_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -146,15 +151,14 @@ namespace NgrokSharp.Tests
         public async System.Threading.Tasks.Task StartTunnel_MissingNameArgumentNullException_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -179,15 +183,14 @@ namespace NgrokSharp.Tests
         public async System.Threading.Tasks.Task StartTunnel_MissingProtoArgumentNullException_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -212,15 +215,14 @@ namespace NgrokSharp.Tests
         public async System.Threading.Tasks.Task StartTunnel_StartTunnelDTOIsNullArgumentNullException_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -239,15 +241,14 @@ namespace NgrokSharp.Tests
         public async void RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             // ACT
@@ -266,16 +267,14 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
-            
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             ngrokManager.StartNgrok();
@@ -298,15 +297,14 @@ namespace NgrokSharp.Tests
         public async void StopTunnel_StopATunnelThatIsRunning_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             
@@ -334,15 +332,14 @@ namespace NgrokSharp.Tests
         public async void StopTunnel_StopTunnelNameIsNullArgumentNullException_True()
         {
             // ARRANGE
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             
@@ -370,15 +367,14 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
-            WebClient webClient = new WebClient();
-            webClient.DownloadFile("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip","ngrok-stable-windows-amd64.zip");
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
 
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
             
             DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
             
-            File.WriteAllText($"{path.FullName}\\ngrok.yml",ngrokYml);
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
 
             NgrokManager ngrokManager = new NgrokManager();
             
