@@ -115,6 +115,52 @@ namespace NgrokSharp.Tests
             Assert.Contains("http://localhost:30000", downloadedString);
         }
         
+        [Theory]
+        [InlineData("eu","Europe")]
+        [InlineData("ap","AsiaPacific")]
+        [InlineData("au","Australia")]
+        [InlineData("sa","SouthAmerica")]
+        [InlineData("jp","Japan")]
+        [InlineData("in","India")]
+        public async void StartTunnel_TestOptionalRegions_True(String regionNameShort, String regionNameFull)
+        {
+            // ARRANGE
+            WebClient webClient = new WebClient();
+            File.WriteAllBytes("ngrok-stable-windows-amd64.zip", _ngrokBytes);
+
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
+            
+            DirectoryInfo path = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            
+            File.WriteAllText($"{path.FullName}\\ngrok.yml",_ngrokYml);
+
+            NgrokManager.Region parsedEnum = (NgrokManager.Region) Enum.Parse(typeof(NgrokManager.Region),regionNameFull,true);
+
+            NgrokManager ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok(parsedEnum);
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "test",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false"
+            };
+
+            var httpResponseMessage = await ngrokManager.StartTunnel(startTunnelDto);
+
+            // ASSERT
+            
+            var tunnelDetail =
+                JsonConvert.DeserializeObject<TunnelDetail>(
+                    await httpResponseMessage.Content.ReadAsStringAsync());
+            
+            Assert.Contains($".{regionNameShort}.", tunnelDetail.PublicUrl.ToString());
+        }
+        
+        
         [Fact]
         public async System.Threading.Tasks.Task StartTunnel_MissingAddrArgumentNullException_True()
         {
