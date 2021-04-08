@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,86 +9,69 @@ using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using NgrokSharp.PlatformSpecific;
+using NgrokSharp.PlatformSpecific.Windows;
 
 namespace NgrokSharp
 {
     public class NgrokManager : INgrokManager
     {
-        private Process _process;
-        private WebClient _webClient;
-        private HttpClient _httpClient;
-        private readonly Uri _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
-        private readonly Uri _ngrokLocalUrl = new Uri("http://localhost:4040/api");
-
-        public event EventHandler DownloadAndUnZipDone;
-
-        protected virtual void OnDownloadAndUnZipDone(EventArgs e)
+        /// <summary>
+        ///     Configure one of the supported to be used. https://ngrok.com/docs#global-locations
+        /// </summary>
+        public enum Region
         {
-            EventHandler handler = DownloadAndUnZipDone;
-            handler?.Invoke(this, e);
+            UnitedStates,
+            Europe,
+            AsiaPacific,
+            Australia,
+            SouthAmerica,
+            Japan,
+            India
         }
+
+        private readonly Uri _ngrokDownloadUrl;
+        private readonly Uri _ngrokLocalUrl = new("http://localhost:4040/api");
+        private readonly HttpClient _httpClient;
+
+        private readonly PlatformCode _platformCode;
+
+        //private Process _process;
+        private readonly WebClient _webClient;
 
         public NgrokManager()
         {
             _httpClient = new HttpClient();
-
             _webClient = new WebClient();
             _webClient.DownloadFileCompleted += WebClientDownloadFileCompleted;
+
+            //detect OS and set Strategy and url
+            if (OperatingSystem.IsWindows())
+            {
+                _platformCode = new PlatformCode(new PlatformWindows());
+                _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
+            }
+
+            if (OperatingSystem.IsLinux())
+                //_platformCode = new PlatformCode(new StrategyLinux());
+                _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
         }
 
-        private void WebClientDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-                Console.WriteLine("File download cancelled.");
-
-            if (e.Error != null)
-                Console.WriteLine(e.Error.ToString());
-            
-            UnzipNgrok();
-        }
-
-        private void UnzipNgrok()
-        {
-            FastZip fastZip = new FastZip();
-            
-            // Will always overwrite if target filenames already exist
-            fastZip.ExtractZip("ngrok-stable-windows-amd64.zip", Directory.GetCurrentDirectory(), null);
-
-            if (File.Exists("ngrok-stable-windows-amd64.zip"))
-                File.Delete("ngrok-stable-windows-amd64.zip");
-
-            OnDownloadAndUnZipDone(EventArgs.Empty);
-        }
+        public event EventHandler DownloadAndUnZipDone;
 
         public void DownloadNgrok()
         {
-            _webClient.DownloadFileAsync(_ngrokDownloadUrl, "ngrok-stable-windows-amd64.zip");
+            _webClient.DownloadFileAsync(_ngrokDownloadUrl, "ngrok-stable-amd64.zip");
         }
 
         public void RegisterAuthToken(string authtoken)
         {
-            if (_process != null)
-            {
-                _process.Refresh();
-                if (!_process.HasExited)
-                    throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
-            }
-            
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = true;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "ngrok.exe";
-            startInfo.Arguments = $"authtoken {authtoken}";
-            process.StartInfo = startInfo;
-            process.Start();
-
+            _platformCode.RegisterAuthToken(authtoken);
         }
 
         public void StartNgrok(Region region = Region.UnitedStates)
         {
-            
-            Dictionary<Region, string> regions = new Dictionary<Region, string>
+            var regions = new Dictionary<Region, string>
             {
                 {Region.UnitedStates, "us"},
                 {Region.Europe, "eu"},
@@ -99,36 +81,15 @@ namespace NgrokSharp
                 {Region.Japan, "jp"},
                 {Region.India, "in"}
             };
-            
+
             var selectedRegion = regions.First(x => x.Key == region).Value;
 
-            _process = new Process
-            {
-                StartInfo =
-                {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    FileName = "ngrok.exe",
-                    Arguments = $"start --none -region {selectedRegion}"
-                }
-            };
-
-            _process.Start();
+            _platformCode.StartNgrok(selectedRegion);
         }
 
         public void StopNgrok()
         {
-            if (_process != null)
-            {
-                _process.Refresh();
-                if (!_process.HasExited)
-                {
-                    _process.Kill();
-                }
-            }
+            _platformCode.StopNgrok();
         }
 
         public async Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto)
@@ -142,11 +103,12 @@ namespace NgrokSharp
             if (string.IsNullOrWhiteSpace(startTunnelDto.proto))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(startTunnelDto.proto));
 
-            return await _httpClient.PostAsync($"{_ngrokLocalUrl}/tunnels", new StringContent(JsonConvert.SerializeObject(startTunnelDto), Encoding.UTF8, "application/json"));
+            return await _httpClient.PostAsync($"{_ngrokLocalUrl}/tunnels",
+                new StringContent(JsonConvert.SerializeObject(startTunnelDto), Encoding.UTF8, "application/json"));
         }
 
         /// <summary>
-        /// Stops a ngrok tunnel
+        ///     Stops a ngrok tunnel
         /// </summary>
         /// <param name="name">Name of the tunnel to stop</param>
         /// <returns>204 status code with an empty body</returns>
@@ -157,7 +119,7 @@ namespace NgrokSharp
 
             var httpResponseMessage = await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/tunnels/{name}");
 
-            return (int)httpResponseMessage.StatusCode;
+            return (int) httpResponseMessage.StatusCode;
         }
 
         public async Task<HttpResponseMessage> ListTunnels()
@@ -167,19 +129,35 @@ namespace NgrokSharp
             return httpResponseMessage;
         }
 
-        /// <summary>
-        /// Configure one of the supported to be used. https://ngrok.com/docs#global-locations
-        /// </summary>
-        public enum Region
+
+        protected virtual void OnDownloadAndUnZipDone(EventArgs e)
         {
-            UnitedStates,
-            Europe,
-            AsiaPacific,
-            Australia,
-            SouthAmerica,
-            Japan,
-            India
+            var handler = DownloadAndUnZipDone;
+            handler?.Invoke(this, e);
         }
-        
+
+        private void WebClientDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+                Console.WriteLine("File download cancelled.");
+
+            if (e.Error != null)
+                Console.WriteLine(e.Error.ToString());
+
+            UnzipNgrok();
+        }
+
+        private void UnzipNgrok()
+        {
+            var fastZip = new FastZip();
+
+            // Will always overwrite if target filenames already exist
+            fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
+
+            if (File.Exists("ngrok-stable-amd64.zip"))
+                File.Delete("ngrok-stable-amd64.zip");
+
+            OnDownloadAndUnZipDone(EventArgs.Empty);
+        }
     }
 }

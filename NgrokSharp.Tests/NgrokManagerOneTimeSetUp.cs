@@ -5,19 +5,34 @@ namespace NgrokSharp.Tests
 {
     public class NgrokManagerOneTimeSetUp : IDisposable
     {
+        private readonly Uri _ngrokDownloadUrlLinux =
+            new("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
+
+        private readonly Uri _ngrokDownloadUrlMac =
+            new("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip");
+
+        private readonly Uri _ngrokDownloadUrlWin =
+            new("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
+
         public string? environmentVariableNgrokYml;
 
         public byte[] ngrokBytes;
+
         public NgrokManagerOneTimeSetUp()
         {
-            WebClient webClient = new WebClient();
-            ngrokBytes = webClient.DownloadData("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
+            var webClient = new WebClient();
+            //ngrokBytes = webClient.DownloadData("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
+
+
+            if (OperatingSystem.IsWindows()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlWin);
+            if (OperatingSystem.IsLinux()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlLinux);
+            if (OperatingSystem.IsMacOS()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlMac);
+
             environmentVariableNgrokYml = Environment.GetEnvironmentVariable("ngrokYml");
         }
 
         public void Dispose()
         {
-            
         }
     }
 }
