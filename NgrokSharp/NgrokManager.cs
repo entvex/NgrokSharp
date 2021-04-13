@@ -8,8 +8,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
+using Mono.Unix;
 using Newtonsoft.Json;
 using NgrokSharp.PlatformSpecific;
+using NgrokSharp.PlatformSpecific.Linux;
 using NgrokSharp.PlatformSpecific.Windows;
 
 namespace NgrokSharp
@@ -30,13 +32,13 @@ namespace NgrokSharp
             India
         }
 
+        private readonly HttpClient _httpClient;
+
         private readonly Uri _ngrokDownloadUrl;
         private readonly Uri _ngrokLocalUrl = new("http://localhost:4040/api");
-        private readonly HttpClient _httpClient;
 
         private readonly PlatformCode _platformCode;
 
-        //private Process _process;
         private readonly WebClient _webClient;
 
         public NgrokManager()
@@ -45,7 +47,7 @@ namespace NgrokSharp
             _webClient = new WebClient();
             _webClient.DownloadFileCompleted += WebClientDownloadFileCompleted;
 
-            //detect OS and set Strategy and url
+            //Detect OS and set Platform and Url
             if (OperatingSystem.IsWindows())
             {
                 _platformCode = new PlatformCode(new PlatformWindows());
@@ -53,8 +55,10 @@ namespace NgrokSharp
             }
 
             if (OperatingSystem.IsLinux())
-                //_platformCode = new PlatformCode(new StrategyLinux());
+            {
+                _platformCode = new PlatformCode(new PlatformLinux());
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
+            }
         }
 
         public event EventHandler DownloadAndUnZipDone;
@@ -153,6 +157,14 @@ namespace NgrokSharp
 
             // Will always overwrite if target filenames already exist
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
+
+            if (OperatingSystem.IsLinux())
+            {
+                UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
+                    FileAccessPermissions.UserReadWriteExecute;
+                UnixFileSystemInfo.GetFileSystemEntry("ngrok-stable-amd64.zip").FileAccessPermissions =
+                    FileAccessPermissions.UserReadWriteExecute;
+            }
 
             if (File.Exists("ngrok-stable-amd64.zip"))
                 File.Delete("ngrok-stable-amd64.zip");

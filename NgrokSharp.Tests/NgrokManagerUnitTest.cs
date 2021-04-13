@@ -39,18 +39,16 @@ namespace NgrokSharp.Tests
 
             var ngrokManager = new NgrokManager();
             ngrokManager.DownloadAndUnZipDone += delegate { are.Set(); };
-
             // ACT
 
             ngrokManager.DownloadNgrok();
             // ASSERT
 
-
             are.WaitOne(TimeSpan.FromSeconds(30));
-            
-            if (OperatingSystem.IsWindows()) Assert.True(File.Exists("ngrok.exe"));;
-            if (OperatingSystem.IsLinux()) Assert.True(File.Exists("ngrok"));;
-            
+
+            if (OperatingSystem.IsWindows()) Assert.True(File.Exists("ngrok.exe"));
+
+            if (OperatingSystem.IsLinux()) Assert.True(File.Exists("ngrok"));
         }
 
         [Fact]
@@ -63,20 +61,30 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             // ASSERT
-
             var downloadedString = webClient.DownloadString("http://localhost:4040/api/");
 
             Assert.False(string.IsNullOrWhiteSpace(downloadedString));
+        }
+
+        private DirectoryInfo SetNgrokYmlLinux()
+        {
+            var path = Directory.CreateDirectory(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+
+            File.WriteAllText($"{path.FullName}/ngrok.yml", _ngrokYml);
+
+            return path;
         }
 
         [Fact]
@@ -89,15 +97,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
-
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
             var startTunnelDto = new StartTunnelDTO
             {
                 name = "foundryvtt",
@@ -109,7 +117,6 @@ namespace NgrokSharp.Tests
             await ngrokManager.StartTunnel(startTunnelDto);
 
             // ASSERT
-
             var downloadedString = webClient.DownloadString("http://localhost:4040/api/tunnels/foundryvtt");
 
             Assert.Contains("http://localhost:30000", downloadedString);
@@ -131,16 +138,17 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var parsedEnum = (NgrokManager.Region) Enum.Parse(typeof(NgrokManager.Region), regionNameFull, true);
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok(parsedEnum);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -150,15 +158,27 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
+
             var httpResponseMessage = await ngrokManager.StartTunnel(startTunnelDto);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             // ASSERT
-
             var tunnelDetail =
                 JsonConvert.DeserializeObject<TunnelDetail>(
                     await httpResponseMessage.Content.ReadAsStringAsync());
 
             Assert.Contains($".{regionNameShort}.", tunnelDetail.PublicUrl.ToString());
+        }
+
+        private DirectoryInfo SetNgrokYmlWindows()
+        {
+            var path = Directory.CreateDirectory(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+
+            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            
+            return path;
         }
 
 
@@ -171,14 +191,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -204,14 +225,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -237,14 +259,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -270,14 +293,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             StartTunnelDTO startTunnelDto = null;
 
@@ -297,18 +321,18 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             // ACT
 
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             // ASSERT
-
             var ex = Assert.Throws<Exception>(() =>
                 ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
 
@@ -327,26 +351,43 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            DirectoryInfo path = null;
+            if (OperatingSystem.IsWindows())
+            {
+                path = SetNgrokYmlWindows();
+            }
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux())
+            {
+                path = SetNgrokYmlLinux();
+            }
 
             var ngrokManager = new NgrokManager();
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             // ACT
-
             ngrokManager.StopNgrok();
+            //Wait for ngrok to stop, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
-
             // ASSERT
             are.WaitOne(TimeSpan.FromSeconds(1)); // wait for the ngrok process to start and write the file
-            var readAllText = File.ReadAllText($"{path.FullName}\\ngrok.yml");
 
-            Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", readAllText);
+            if (OperatingSystem.IsWindows())
+            {
+                File.ReadAllText($"{path.FullName}\\ngrok.yml");
+            }
+
+            if (OperatingSystem.IsLinux())
+            {
+                File.WriteAllText($"{path.FullName}/ngrok.yml", _ngrokYml);
+            }
+
+            Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", "_ngrokYml");
         }
 
         [Fact]
@@ -358,14 +399,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
 
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -376,12 +418,13 @@ namespace NgrokSharp.Tests
             };
 
             await ngrokManager.StartTunnel(startTunnelDto);
-            // ACT
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
+            // ACT
             var stopTunnel = await ngrokManager.StopTunnel("foundryvtt");
 
             // ASSERT
-
             Assert.Equal(204, stopTunnel); // Should return 204 status code with an empty body
         }
 
@@ -394,14 +437,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
 
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -414,7 +458,6 @@ namespace NgrokSharp.Tests
             // ACT
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StopTunnel(""));
-
             // ASSERT
 
             Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')", ex.Message);
@@ -430,14 +473,15 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
 
             ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -448,6 +492,9 @@ namespace NgrokSharp.Tests
             };
 
             await ngrokManager.StartTunnel(startTunnelDto);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
             // ACT
             are.WaitOne(TimeSpan.FromSeconds(1));
             var httpResponseMessage = await ngrokManager.ListTunnels();

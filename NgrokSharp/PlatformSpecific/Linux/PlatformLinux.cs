@@ -1,15 +1,67 @@
-﻿namespace NgrokSharp.PlatformSpecific.Linux
+﻿using System;
+using System.Diagnostics;
+using Mono.Unix;
+
+namespace NgrokSharp.PlatformSpecific.Linux
 {
-    /*public class PlatformLinux : IPlatformStrategy
+    public class PlatformLinux : IPlatformStrategy
     {
-        public void RegisterAuthToken(string authtoken, Process process)
+        private Process Process { get; set; }
+
+        public void RegisterAuthToken(string authtoken)
         {
-            throw new System.NotImplementedException();
+            if (Process != null)
+            {
+                Process.Refresh();
+                if (!Process.HasExited)
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
+            }
+
+            UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
+                FileAccessPermissions.UserReadWriteExecute;
+
+            Process = new Process();
+            var startInfo = new ProcessStartInfo
+            {
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                FileName = "ngrok",
+                Arguments = $"authtoken {authtoken}"
+            };
+            Process.StartInfo = startInfo;
+            Process.Start();
         }
 
-        public void StartNgrok(Process process, string region)
+        public void StartNgrok(string region)
         {
-            throw new System.NotImplementedException();
+            UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
+                FileAccessPermissions.UserReadWriteExecute;
+
+            Process = new Process
+            {
+                StartInfo =
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = "ngrok",
+                    Arguments = $"start --none -region {region}"
+                }
+            };
+
+            Process.Start();
         }
-    }*/
+
+        public void StopNgrok()
+        {
+            if (Process != null)
+            {
+                Process.Refresh();
+                if (!Process.HasExited) Process.Kill();
+            }
+        }
+    }
 }

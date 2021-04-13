@@ -1,8 +1,8 @@
+using System;
+using Newtonsoft.Json;
+
 namespace NgrokSharp
 {
-    using System;
-    using Newtonsoft.Json;
-
     public partial class TunnelsDetails
     {
         [JsonProperty("tunnels", NullValueHandling = NullValueHandling.Ignore)]
