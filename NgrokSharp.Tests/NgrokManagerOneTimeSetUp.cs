@@ -21,8 +21,6 @@ namespace NgrokSharp.Tests
         public NgrokManagerOneTimeSetUp()
         {
             var webClient = new WebClient();
-            //ngrokBytes = webClient.DownloadData("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
-
 
             if (OperatingSystem.IsWindows()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlWin);
             if (OperatingSystem.IsLinux()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlLinux);
