@@ -341,7 +341,7 @@ namespace NgrokSharp.Tests
                 ex.Message);
         }
 
-        [Fact(Skip = "will fix later, Environment variable in test issue")]
+        [Fact]
         public async void RegisterAuthToken_AddNewAuthTokenAfterStop_True()
         {
             // ARRANGE
@@ -377,17 +377,19 @@ namespace NgrokSharp.Tests
             // ASSERT
             are.WaitOne(TimeSpan.FromSeconds(1)); // wait for the ngrok process to start and write the file
 
+            string acualNgrokYml = null;
+            
             if (OperatingSystem.IsWindows())
             {
-                File.ReadAllText($"{path.FullName}\\ngrok.yml");
+                acualNgrokYml = File.ReadAllText($"{path.FullName}\\ngrok.yml");
             }
 
             if (OperatingSystem.IsLinux())
             {
-                File.WriteAllText($"{path.FullName}/ngrok.yml", _ngrokYml);
+                acualNgrokYml = File.ReadAllText($"{path.FullName}/ngrok.yml");
             }
 
-            Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", "_ngrokYml");
+            Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", acualNgrokYml);
         }
 
         [Fact]

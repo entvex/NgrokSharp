@@ -25,8 +25,8 @@ namespace NgrokSharp.Tests
             if (OperatingSystem.IsWindows()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlWin);
             if (OperatingSystem.IsLinux()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlLinux);
             if (OperatingSystem.IsMacOS()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlMac);
-
-            environmentVariableNgrokYml = Environment.GetEnvironmentVariable("ngrokYml");
+            
+            environmentVariableNgrokYml = Environment.GetEnvironmentVariable("NGROKYML",EnvironmentVariableTarget.User);
         }
 
         public void Dispose()
