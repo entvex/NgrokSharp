@@ -12,6 +12,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Mono.Unix;
 using Newtonsoft.Json;
 using NgrokSharp.PlatformSpecific;
+using NgrokSharp.PlatformSpecific.Linux;
 using NgrokSharp.PlatformSpecific.Windows;
 
 namespace NgrokSharp
@@ -59,7 +60,7 @@ namespace NgrokSharp
 
             if (OperatingSystem.IsLinux())
             {
-                //_platformCode = new PlatformCode(new PlatformLinux());
+                _platformCode = new PlatformCode(new PlatformLinux(), _process);
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
             }
         }

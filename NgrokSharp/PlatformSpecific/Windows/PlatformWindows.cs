@@ -37,8 +37,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
                         "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
             }
 
-            ProcessStartInfo startInfo;
-            startInfo = new ProcessStartInfo
+            var startInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardOutput = true,
