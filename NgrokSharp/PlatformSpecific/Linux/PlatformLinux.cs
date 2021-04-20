@@ -36,15 +36,6 @@ namespace NgrokSharp.PlatformSpecific.Linux
 
         public void StartNgrok(Process process ,string region)
         {
-            
-            if (process == null)
-            {
-                process.Refresh();
-                if (!process.HasExited)
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
-            }
-            
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
 
