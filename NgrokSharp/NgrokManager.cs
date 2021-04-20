@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -41,22 +42,25 @@ namespace NgrokSharp
 
         private readonly WebClient _webClient;
 
+        private readonly Process _process;
+
         public NgrokManager()
         {
             _httpClient = new HttpClient();
             _webClient = new WebClient();
+            _process = new Process();
             _webClient.DownloadFileCompleted += WebClientDownloadFileCompleted;
 
             //Detect OS and set Platform and Url
             if (OperatingSystem.IsWindows())
             {
-                _platformCode = new PlatformCode(new PlatformWindows());
+                _platformCode = new PlatformCode(new PlatformWindows(),_process);
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
             }
 
             if (OperatingSystem.IsLinux())
             {
-                _platformCode = new PlatformCode(new PlatformLinux());
+                _platformCode = new PlatformCode(new PlatformLinux(), _process);
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
             }
         }
@@ -91,10 +95,10 @@ namespace NgrokSharp
             _platformCode.StartNgrok(selectedRegion);
         }
 
-        public void StopNgrok()
+        /*public void StopNgrok()
         {
             _platformCode.StopNgrok();
-        }
+        }*/
 
         public async Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto)
         {
@@ -170,6 +174,19 @@ namespace NgrokSharp
                 File.Delete("ngrok-stable-amd64.zip");
 
             OnDownloadAndUnZipDone(EventArgs.Empty);
+        }
+        
+        public void StopNgrok()
+        {
+            if (_process != null)
+            {
+                _process.Refresh();
+                if (!_process.HasExited)
+                {
+                    _process.Kill();
+                    _process.Close();
+                }
+            }
         }
     }
 }

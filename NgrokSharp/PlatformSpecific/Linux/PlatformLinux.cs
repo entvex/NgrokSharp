@@ -6,62 +6,72 @@ namespace NgrokSharp.PlatformSpecific.Linux
 {
     public class PlatformLinux : IPlatformStrategy
     {
-        private Process Process { get; set; }
-
-        public void RegisterAuthToken(string authtoken)
+        public void RegisterAuthToken(Process process ,string authtoken)
         {
-            if (Process != null)
-            {
-                Process.Refresh();
-                if (!Process.HasExited)
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
-            }
-
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
 
-            Process = new Process();
-            var startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo;
+            startInfo = new ProcessStartInfo
             {
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "ngrok",
                 Arguments = $"authtoken {authtoken}"
             };
-            Process.StartInfo = startInfo;
-            Process.Start();
+            try
+            {
+                process.StartInfo = startInfo;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
+                }
+            }
+            process.Start();
         }
 
-        public void StartNgrok(string region)
+        public void StartNgrok(Process process ,string region)
         {
+            
+            if (process == null)
+            {
+                process.Refresh();
+                if (!process.HasExited)
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+            }
+            
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
 
-            Process = new Process
+            var startInfo = new ProcessStartInfo
             {
-                StartInfo =
-                {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    FileName = "ngrok",
-                    Arguments = $"start --none -region {region}"
-                }
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = "ngrok",
+                Arguments = $"start --none -region {region}"
             };
-
-            Process.Start();
-        }
-
-        public void StopNgrok()
-        {
-            if (Process != null)
+            try
             {
-                Process.Refresh();
-                if (!Process.HasExited) Process.Kill();
+                process.StartInfo = startInfo;
             }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                }
+            }
+            process.StartInfo = startInfo;
+            process.Start();
         }
     }
 }
