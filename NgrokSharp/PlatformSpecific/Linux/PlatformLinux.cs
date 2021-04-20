@@ -8,14 +8,6 @@ namespace NgrokSharp.PlatformSpecific.Linux
     {
         public void RegisterAuthToken(Process process ,string authtoken)
         {
-            if (process == null)
-            {
-                process.Refresh();
-                if (!process.HasExited)
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
-            }
-
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
 
@@ -27,7 +19,18 @@ namespace NgrokSharp.PlatformSpecific.Linux
                 FileName = "ngrok",
                 Arguments = $"authtoken {authtoken}"
             };
-            process.StartInfo = startInfo;
+            try
+            {
+                process.StartInfo = startInfo;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
+                }
+            }
             process.Start();
         }
 
@@ -55,6 +58,18 @@ namespace NgrokSharp.PlatformSpecific.Linux
                 FileName = "ngrok",
                 Arguments = $"start --none -region {region}"
             };
+            try
+            {
+                process.StartInfo = startInfo;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    throw new Exception(
+                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                }
+            }
             process.StartInfo = startInfo;
             process.Start();
         }
