@@ -6,6 +6,5 @@ namespace NgrokSharp.PlatformSpecific
     {
         public void RegisterAuthToken(Process process ,string authtoken);
         public void StartNgrok(Process process, string region);
-        //public void StopNgrok();
     }
 }

@@ -23,8 +23,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
             {
                 if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
                 {
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
+                    throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
                 }
             }
             process.Start();
@@ -50,8 +49,12 @@ namespace NgrokSharp.PlatformSpecific.Windows
             {
                 if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
                 {
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                    throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                }
+
+                if (e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    process = new Process();
                 }
             }
             process.StartInfo = startInfo;
