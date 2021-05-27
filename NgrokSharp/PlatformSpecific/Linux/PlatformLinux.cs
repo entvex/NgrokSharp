@@ -6,7 +6,12 @@ namespace NgrokSharp.PlatformSpecific.Linux
 {
     public class PlatformLinux : IPlatformStrategy
     {
-        public void RegisterAuthToken(Process process ,string authtoken)
+        private Process _process;
+        public PlatformLinux()
+        {
+            _process = new Process();
+        }
+        public void RegisterAuthToken(string authtoken)
         {
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
@@ -21,7 +26,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
             };
             try
             {
-                process.StartInfo = startInfo;
+                _process.StartInfo = startInfo;
             }
             catch (InvalidOperationException e)
             {
@@ -31,10 +36,10 @@ namespace NgrokSharp.PlatformSpecific.Linux
                         "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.");
                 }
             }
-            process.Start();
+            _process.Start();
         }
 
-        public void StartNgrok(Process process ,string region)
+        public void StartNgrok(string region)
         {
             UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions =
                 FileAccessPermissions.UserReadWriteExecute;
@@ -51,18 +56,36 @@ namespace NgrokSharp.PlatformSpecific.Linux
             };
             try
             {
-                process.StartInfo = startInfo;
+                _process.StartInfo = startInfo;
             }
             catch (InvalidOperationException e)
             {
-                if (e.Message == "No process is associated with this object." || e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                if (e.Message == "No process is associated with this object.")
                 {
-                    throw new Exception(
-                        "The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                    throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
+                }
+
+                if (e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                {
+                    //A process in .NET can only be created and used once, after that a new one has to be made!
+                    _process = new Process();
                 }
             }
-            process.StartInfo = startInfo;
-            process.Start();
+            _process.StartInfo = startInfo;
+            _process.Start();
+        }
+
+        public void StopNgrok()
+        {
+            if (_process != null)
+            {
+                _process.Refresh();
+                if (!_process.HasExited)
+                {
+                    _process.Kill();
+                    _process.Close();
+                }
+            }
         }
     }
 }

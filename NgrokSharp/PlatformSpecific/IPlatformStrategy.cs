@@ -4,7 +4,8 @@ namespace NgrokSharp.PlatformSpecific
 {
     public interface IPlatformStrategy
     {
-        public void RegisterAuthToken(Process process ,string authtoken);
-        public void StartNgrok(Process process, string region);
+        public void RegisterAuthToken(string authtoken);
+        public void StartNgrok(string region);
+        public void StopNgrok();
     }
 }

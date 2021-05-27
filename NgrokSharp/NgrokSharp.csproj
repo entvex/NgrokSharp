@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <PackageVersion>1.0.1</PackageVersion>
+        <PackageVersion>1.0.5</PackageVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/entvex/NgrokSharp</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/entvex/NgrokSharp/blob/master/LICENSE</PackageLicenseUrl>
@@ -11,8 +11,8 @@
 
     <ItemGroup>
       <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-      <PackageReference Include="SharpZipLib" Version="1.3.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="SharpZipLib" Version="1.3.2" />
     </ItemGroup>
 
 </Project>

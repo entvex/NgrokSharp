@@ -5,22 +5,24 @@ namespace NgrokSharp.PlatformSpecific
     public class PlatformCode
     {
         private readonly IPlatformStrategy _platformStrategy;
-        private readonly Process _process;
-        
-        public PlatformCode(IPlatformStrategy platformStrategy, Process process)
+
+        public PlatformCode(IPlatformStrategy platformStrategy)
         {
             _platformStrategy = platformStrategy;
-            _process = process;
         }
 
         public void RegisterAuthToken(string authtoken)
         {
-            _platformStrategy.RegisterAuthToken(_process,authtoken);
+            _platformStrategy.RegisterAuthToken(authtoken);
         }
 
         public void StartNgrok(string region)
         {
-            _platformStrategy.StartNgrok(_process,region);
+            _platformStrategy.StartNgrok(region);
+        }
+        public void StopNgrok()
+        {
+            _platformStrategy.StopNgrok();
         }
     }
 }
