@@ -2,11 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <PackageVersion>1.0.5</PackageVersion>
+        <PackageVersion>1.0.6</PackageVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/entvex/NgrokSharp</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/entvex/NgrokSharp/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/entvex/NgrokSharp</RepositoryUrl>
+        <Title>NgrokSharp</Title>
     </PropertyGroup>
 
     <ItemGroup>
