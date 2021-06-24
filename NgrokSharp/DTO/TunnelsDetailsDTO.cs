@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace NgrokSharp
 {
-    public partial class TunnelsDetails
+    public partial class TunnelsDetailsDTO
     {
         [JsonProperty("tunnels", NullValueHandling = NullValueHandling.Ignore)]
         public Tunnel[] Tunnels { get; set; }
