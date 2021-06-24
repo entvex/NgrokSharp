@@ -132,7 +132,6 @@ namespace NgrokSharp.Tests
         public async void StartTunnel_TestOptionalRegions_True(string regionNameShort, string regionNameFull)
         {
             // ARRANGE
-            var webClient = new WebClient();
             File.WriteAllBytes("ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -165,7 +164,7 @@ namespace NgrokSharp.Tests
 
             // ASSERT
             var tunnelDetail =
-                JsonConvert.DeserializeObject<TunnelDetail>(
+                JsonConvert.DeserializeObject<TunnelDetailDTO>(
                     await httpResponseMessage.Content.ReadAsStringAsync());
 
             Assert.Contains($".{regionNameShort}.", tunnelDetail.PublicUrl.ToString());
@@ -303,9 +302,7 @@ namespace NgrokSharp.Tests
             //Wait for ngrok to start, it can be slow on some systems.
             Thread.Sleep(1000);
 
-            StartTunnelDTO startTunnelDto = null;
-
-            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => ngrokManager.StartTunnel(startTunnelDto));
+            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => ngrokManager.StartTunnel(null));
 
             // ASSERT
 
@@ -313,7 +310,7 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public async void RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
+        public void RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
         {
             // ARRANGE
             File.WriteAllBytes("ngrok-stable-amd64.zip", _ngrokBytes);
@@ -342,7 +339,7 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public async void RegisterAuthToken_AddNewAuthTokenAfterStop_True()
+        public void RegisterAuthToken_AddNewAuthTokenAfterStop_True()
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
@@ -502,7 +499,7 @@ namespace NgrokSharp.Tests
             var httpResponseMessage = await ngrokManager.ListTunnels();
 
             var tunnelDetail =
-                JsonConvert.DeserializeObject<TunnelsDetails>(
+                JsonConvert.DeserializeObject<TunnelsDetailsDTO>(
                     await httpResponseMessage.Content.ReadAsStringAsync());
 
             // ASSERT

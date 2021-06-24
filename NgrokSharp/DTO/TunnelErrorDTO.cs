@@ -2,7 +2,7 @@
 
 namespace NgrokSharp
 {
-    public partial class TunnelError
+    public partial class TunnelErrorDTO
     {
         [JsonProperty("error_code", NullValueHandling = NullValueHandling.Ignore)]
         public long? ErrorCode { get; set; }

@@ -10,6 +10,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
         {
             _process = new Process();
         }
+        
         public void RegisterAuthToken(string authtoken)
         {
             ProcessStartInfo startInfo;
