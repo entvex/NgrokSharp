@@ -121,6 +121,45 @@ namespace NgrokSharp.Tests
 
             Assert.Contains("http://localhost:30000", downloadedString);
         }
+        
+        [Fact]
+        public async void StartTunnel_UseSubDomainGuid_True()
+        {
+            // ARRANGE
+            var webClient = new WebClient();
+            File.WriteAllBytes("ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
+
+            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
+
+            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+
+
+            string newGuid = Guid.NewGuid().ToString();
+
+            var ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false",
+                subdomain = newGuid
+            };
+
+            await ngrokManager.StartTunnel(startTunnelDto);
+
+            // ASSERT
+            var downloadedString = webClient.DownloadString("http://localhost:4040/api/tunnels/foundryvtt");
+
+            Assert.Contains(newGuid, downloadedString);
+        }
 
         [Theory]
         [InlineData("eu", "Europe")]
