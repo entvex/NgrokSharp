@@ -12,7 +12,7 @@ namespace NgrokSharp
         void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();
         Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto);
-        Task<int> StopTunnel(string name);
+        Task<HttpResponseMessage> StopTunnel(string name);
         Task<HttpResponseMessage> ListTunnels();
     }
 }

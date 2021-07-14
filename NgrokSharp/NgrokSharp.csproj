@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <PackageVersion>1.0.6</PackageVersion>
+        <PackageVersion>1.0.8</PackageVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/entvex/NgrokSharp</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/entvex/NgrokSharp/blob/master/LICENSE</PackageLicenseUrl>

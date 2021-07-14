@@ -41,7 +41,10 @@ namespace NgrokSharp
         private readonly PlatformCode _platformCode;
 
         private readonly WebClient _webClient;
-
+        
+        /// <summary>
+        /// Constructor for NgrokManager
+        /// </summary>
         public NgrokManager()
         {
             _httpClient = new HttpClient();
@@ -110,7 +113,7 @@ namespace NgrokSharp
         /// Starts a Ngrok tunnel
         /// </summary>
         /// <param name="startTunnelDto"></param>
-        /// <returns></returns>
+        /// <returns>A httpResponseMessage that can be parse into TunnelDetailDTO</returns>
         /// <exception cref="ArgumentNullException">The input, can't be null</exception>
         /// <exception cref="ArgumentException">Missing values in input</exception>
         public async Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto)
@@ -132,29 +135,28 @@ namespace NgrokSharp
         ///     Stops a ngrok tunnel
         /// </summary>
         /// <param name="name">Name of the tunnel to stop</param>
-        /// <returns>204 status code with an empty body</returns>
-        public async Task<int> StopTunnel(string name)
+        /// <returns>A httpResponseMessage that will contain 204 status code, if successful</returns>
+        public async Task<HttpResponseMessage> StopTunnel(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
             var httpResponseMessage = await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/tunnels/{name}");
 
-            return (int) httpResponseMessage.StatusCode;
+            return httpResponseMessage;
         }
         
         /// <summary>
-        /// Gets a list the tunnels
+        /// Gets a list of the tunnels
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A httpResponseMessage, that can be parse into TunnelsDetailsDTO </returns>
         public async Task<HttpResponseMessage> ListTunnels()
         {
             var httpResponseMessage = await _httpClient.GetAsync($"{_ngrokLocalUrl}/tunnels");
 
             return httpResponseMessage;
         }
-
-
+        
         protected virtual void OnDownloadAndUnZipDone(EventArgs e)
         {
             var handler = DownloadAndUnZipDone;
@@ -164,10 +166,10 @@ namespace NgrokSharp
         private void WebClientDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (e.Cancelled)
-                Console.WriteLine("File download cancelled.");
+                throw new TaskCanceledException("File download cancelled.");
 
             if (e.Error != null)
-                Console.WriteLine(e.Error.ToString());
+                throw new Exception(e.Error.ToString());
 
             UnzipNgrok();
         }

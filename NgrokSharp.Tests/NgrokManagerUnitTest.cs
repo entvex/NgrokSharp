@@ -463,7 +463,7 @@ namespace NgrokSharp.Tests
             var stopTunnel = await ngrokManager.StopTunnel("foundryvtt");
 
             // ASSERT
-            Assert.Equal(204, stopTunnel); // Should return 204 status code with an empty body
+            Assert.Equal(HttpStatusCode.NoContent, stopTunnel.StatusCode); // Should return 204 status code with no content
         }
 
         [Fact]
