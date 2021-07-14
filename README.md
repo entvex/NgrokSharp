@@ -104,7 +104,7 @@ Thanks to these
 [forks-shield]: https://img.shields.io/github/forks/entvex/NgrokSharp.svg?style=for-the-badge
 [forks-url]: https://github.com/entvex/repo/network/members
 [stars-shield]: https://img.shields.io/github/stars/entvex/NgrokSharp.svg?style=for-the-badge
-[stars-url]: https://github.com/entvex/repo/stargazers
+[stars-url]: https://github.com/entvex/NgrokSharp/stargazers
 [issues-shield]: https://img.shields.io/github/issues/entvex/NgrokSharp.svg?style=for-the-badge
 [issues-url]: https://github.com/entvex/NgrokSharp/issues
 [license-shield]: https://img.shields.io/github/license/entvex/NgrokSharp.svg?style=for-the-badge
