@@ -5,10 +5,9 @@ using NgrokSharp.DTO;
 
 namespace NgrokSharp
 {
-    public interface INgrokManager
+    public interface INgrokManager : IDisposable
     {
-        event EventHandler DownloadAndUnZipDone;
-        void DownloadNgrok();
+        Task DownloadAndUnzipNgrokAsync();
         void RegisterAuthToken(string authtoken);
         void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();

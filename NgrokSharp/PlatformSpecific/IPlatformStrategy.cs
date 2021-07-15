@@ -1,6 +1,8 @@
-﻿namespace NgrokSharp.PlatformSpecific
+﻿using System;
+
+namespace NgrokSharp.PlatformSpecific
 {
-    public interface IPlatformStrategy
+    public interface IPlatformStrategy : IDisposable 
     {
         public void RegisterAuthToken(string authtoken);
         public void StartNgrok(string region);
