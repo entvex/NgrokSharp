@@ -89,7 +89,7 @@ namespace NgrokSharp
         ///     Registers your authtoken, if empty your sessions will be restricted to 2 hours.
         /// </summary>
         /// <param name="authtoken">The token</param>
-        public void RegisterAuthToken(string authtoken) => _platformCode.RegisterAuthToken(authtoken);
+        public async Task RegisterAuthTokenAsync(string authtoken) => await _platformCode.RegisterAuthTokenAsync(authtoken);
 
         /// <summary>
         ///     Starts Ngrok

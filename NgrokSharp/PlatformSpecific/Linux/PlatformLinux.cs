@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Mono.Unix;
 
 namespace NgrokSharp.PlatformSpecific.Linux
@@ -15,18 +16,20 @@ namespace NgrokSharp.PlatformSpecific.Linux
             _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
         }
 
-        public void RegisterAuthToken(string authtoken)
+        public async Task RegisterAuthTokenAsync(string authtoken)
         {
             UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             if(_ngrokProcess == null)
             {
-                Process.Start(new ProcessStartInfo()
+                using var registerProcess = new Process();
+                registerProcess.StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = $"{_downloadFolder}ngrok",
                     Arguments = $"authtoken {authtoken}"
-                });
+                };
+                await registerProcess.WaitForExitAsync();
             }
             else
             {

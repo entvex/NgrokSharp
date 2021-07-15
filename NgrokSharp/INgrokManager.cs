@@ -8,7 +8,7 @@ namespace NgrokSharp
     public interface INgrokManager : IDisposable
     {
         Task DownloadAndUnzipNgrokAsync();
-        void RegisterAuthToken(string authtoken);
+        Task RegisterAuthTokenAsync(string authtoken);
         void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();
         Task<HttpResponseMessage> StartTunnelAsync(StartTunnelDTO startTunnelDto);

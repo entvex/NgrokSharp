@@ -350,7 +350,7 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public void RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
+        public async Task RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
         {
             // ARRANGE
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
@@ -370,8 +370,8 @@ namespace NgrokSharp.Tests
             Thread.Sleep(1000);
 
             // ASSERT
-            var ex = Assert.Throws<Exception>(() =>
-                ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
+            var ex = await Assert.ThrowsAsync<Exception>(async () =>
+                await ngrokManager.RegisterAuthTokenAsync("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
 
             Assert.Equal(
                 "The Ngrok process is already running. Please use StopNgrok() and then register the AuthToken again.",
@@ -379,7 +379,7 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public void RegisterAuthToken_AddNewAuthTokenAfterStop_True()
+        public async Task RegisterAuthToken_AddNewAuthTokenAfterStop_True()
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
@@ -403,7 +403,7 @@ namespace NgrokSharp.Tests
             //Wait for ngrok to stop, it can be slow on some systems.
             Thread.Sleep(1000);
 
-            ngrokManager.RegisterAuthToken("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            await ngrokManager.RegisterAuthTokenAsync("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
             // ASSERT
             are.WaitOne(TimeSpan.FromSeconds(1)); // wait for the ngrok process to start and write the file

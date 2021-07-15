@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace NgrokSharp.PlatformSpecific.Windows
 {
@@ -14,17 +15,19 @@ namespace NgrokSharp.PlatformSpecific.Windows
             _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
         }
 
-        public void RegisterAuthToken(string authtoken)
+        public async Task RegisterAuthTokenAsync(string authtoken)
         {
             if (_ngrokProcess == null)
             {
-                Process.Start(new ProcessStartInfo()
+                using var registerProcess = new Process();
+                registerProcess.StartInfo = new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = $"{_downloadFolder}ngrok.exe",
                     Arguments = $"authtoken {authtoken}"
-                });
+                };
+                await registerProcess.WaitForExitAsync();
             }
             else
             {
