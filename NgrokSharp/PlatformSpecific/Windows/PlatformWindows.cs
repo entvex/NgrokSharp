@@ -27,6 +27,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
                     FileName = $"{_downloadFolder}ngrok.exe",
                     Arguments = $"authtoken {authtoken}"
                 };
+                registerProcess.Start();
                 await registerProcess.WaitForExitAsync();
             }
             else
