@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using NgrokSharp.DTO;
 
 namespace NgrokSharp
 {
@@ -11,8 +12,8 @@ namespace NgrokSharp
         void RegisterAuthToken(string authtoken);
         void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();
-        Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto);
-        Task<HttpResponseMessage> StopTunnel(string name);
-        Task<HttpResponseMessage> ListTunnels();
+        Task<HttpResponseMessage> StartTunnelAsync(StartTunnelDTO startTunnelDto);
+        Task<HttpResponseMessage> StopTunnelAsync(string name);
+        Task<HttpResponseMessage> ListTunnelsAsync();
     }
 }

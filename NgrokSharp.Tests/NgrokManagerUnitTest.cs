@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using NgrokSharp.DTO;
 using Xunit;
 
 namespace NgrokSharp.Tests
@@ -114,14 +115,14 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
 
             // ASSERT
             var downloadedString = webClient.DownloadString("http://localhost:4040/api/tunnels/foundryvtt");
 
             Assert.Contains("http://localhost:30000", downloadedString);
         }
-        
+
         [Fact(Skip = "Issues with the token, will fix later")]
         public async void StartTunnel_UseSubDomainGuid_True()
         {
@@ -137,7 +138,7 @@ namespace NgrokSharp.Tests
             if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
 
 
-            string newGuid = Guid.NewGuid().ToString();
+            var newGuid = Guid.NewGuid().ToString();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -153,7 +154,7 @@ namespace NgrokSharp.Tests
                 subdomain = newGuid
             };
 
-            await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
 
             // ASSERT
             var downloadedString = webClient.DownloadString("http://localhost:4040/api/tunnels/foundryvtt");
@@ -197,7 +198,7 @@ namespace NgrokSharp.Tests
             };
 
 
-            var httpResponseMessage = await ngrokManager.StartTunnel(startTunnelDto);
+            var httpResponseMessage = await ngrokManager.StartTunnelAsync(startTunnelDto);
             //Wait for ngrok to start, it can be slow on some systems.
             Thread.Sleep(1000);
 
@@ -215,7 +216,7 @@ namespace NgrokSharp.Tests
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
 
             File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
-            
+
             return path;
         }
 
@@ -247,7 +248,7 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnelAsync(startTunnelDto));
 
             // ASSERT
 
@@ -281,7 +282,7 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnelAsync(startTunnelDto));
 
             // ASSERT
 
@@ -315,7 +316,7 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnel(startTunnelDto));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StartTunnelAsync(startTunnelDto));
 
             // ASSERT
 
@@ -341,7 +342,7 @@ namespace NgrokSharp.Tests
             //Wait for ngrok to start, it can be slow on some systems.
             Thread.Sleep(1000);
 
-            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => ngrokManager.StartTunnel(null));
+            var ex = await Assert.ThrowsAsync<ArgumentNullException>(() => ngrokManager.StartTunnelAsync(null));
 
             // ASSERT
 
@@ -388,15 +389,9 @@ namespace NgrokSharp.Tests
             fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null);
 
             DirectoryInfo path = null;
-            if (OperatingSystem.IsWindows())
-            {
-                path = SetNgrokYmlWindows();
-            }
+            if (OperatingSystem.IsWindows()) path = SetNgrokYmlWindows();
 
-            if (OperatingSystem.IsLinux())
-            {
-                path = SetNgrokYmlLinux();
-            }
+            if (OperatingSystem.IsLinux()) path = SetNgrokYmlLinux();
 
             var ngrokManager = new NgrokManager();
             ngrokManager.StartNgrok();
@@ -414,16 +409,10 @@ namespace NgrokSharp.Tests
             are.WaitOne(TimeSpan.FromSeconds(1)); // wait for the ngrok process to start and write the file
 
             string acualNgrokYml = null;
-            
-            if (OperatingSystem.IsWindows())
-            {
-                acualNgrokYml = File.ReadAllText($"{path.FullName}\\ngrok.yml");
-            }
 
-            if (OperatingSystem.IsLinux())
-            {
-                acualNgrokYml = File.ReadAllText($"{path.FullName}/ngrok.yml");
-            }
+            if (OperatingSystem.IsWindows()) acualNgrokYml = File.ReadAllText($"{path.FullName}\\ngrok.yml");
+
+            if (OperatingSystem.IsLinux()) acualNgrokYml = File.ReadAllText($"{path.FullName}/ngrok.yml");
 
             Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", acualNgrokYml);
         }
@@ -455,15 +444,16 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
             //Wait for ngrok to start, it can be slow on some systems.
             Thread.Sleep(1000);
 
             // ACT
-            var stopTunnel = await ngrokManager.StopTunnel("foundryvtt");
+            var stopTunnel = await ngrokManager.StopTunnelAsync("foundryvtt");
 
             // ASSERT
-            Assert.Equal(HttpStatusCode.NoContent, stopTunnel.StatusCode); // Should return 204 status code with no content
+            Assert.Equal(HttpStatusCode.NoContent,
+                stopTunnel.StatusCode); // Should return 204 status code with no content
         }
 
         [Fact]
@@ -492,10 +482,10 @@ namespace NgrokSharp.Tests
                 addr = "30000",
                 bind_tls = "false"
             };
-            await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
             // ACT
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StopTunnel(""));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => ngrokManager.StopTunnelAsync(""));
             // ASSERT
 
             Assert.Equal("Value cannot be null or whitespace. (Parameter 'name')", ex.Message);
@@ -529,13 +519,13 @@ namespace NgrokSharp.Tests
                 bind_tls = "false"
             };
 
-            await ngrokManager.StartTunnel(startTunnelDto);
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
             //Wait for ngrok to start, it can be slow on some systems.
             Thread.Sleep(1000);
 
             // ACT
             are.WaitOne(TimeSpan.FromSeconds(1));
-            var httpResponseMessage = await ngrokManager.ListTunnels();
+            var httpResponseMessage = await ngrokManager.ListTunnelsAsync();
 
             var tunnelDetail =
                 JsonConvert.DeserializeObject<TunnelsDetailsDTO>(

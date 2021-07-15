@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace NgrokSharp.PlatformSpecific
+﻿namespace NgrokSharp.PlatformSpecific
 {
     public class PlatformCode
     {
@@ -20,6 +18,7 @@ namespace NgrokSharp.PlatformSpecific
         {
             _platformStrategy.StartNgrok(region);
         }
+
         public void StopNgrok()
         {
             _platformStrategy.StopNgrok();

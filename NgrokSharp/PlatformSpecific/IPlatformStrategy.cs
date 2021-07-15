@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace NgrokSharp.PlatformSpecific
+﻿namespace NgrokSharp.PlatformSpecific
 {
     public interface IPlatformStrategy
     {

@@ -16,7 +16,7 @@ namespace NgrokSharp.Tests
 
         public string? environmentVariableNgrokYml;
 
-        public byte[] ngrokBytes;
+        public readonly byte[] ngrokBytes;
 
         public NgrokManagerOneTimeSetUp()
         {
@@ -25,8 +25,9 @@ namespace NgrokSharp.Tests
             if (OperatingSystem.IsWindows()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlWin);
             if (OperatingSystem.IsLinux()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlLinux);
             if (OperatingSystem.IsMacOS()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlMac);
-            
-            environmentVariableNgrokYml = Environment.GetEnvironmentVariable("NGROKYML",EnvironmentVariableTarget.User);
+
+            environmentVariableNgrokYml =
+                Environment.GetEnvironmentVariable("NGROKYML", EnvironmentVariableTarget.User);
         }
 
         public void Dispose()

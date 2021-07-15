@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 using Mono.Unix;
 using Newtonsoft.Json;
+using NgrokSharp.DTO;
 using NgrokSharp.PlatformSpecific;
 using NgrokSharp.PlatformSpecific.Linux;
 using NgrokSharp.PlatformSpecific.Windows;
@@ -41,9 +41,9 @@ namespace NgrokSharp
         private readonly PlatformCode _platformCode;
 
         private readonly WebClient _webClient;
-        
+
         /// <summary>
-        /// Constructor for NgrokManager
+        ///     Constructor for NgrokManager
         /// </summary>
         public NgrokManager()
         {
@@ -66,12 +66,12 @@ namespace NgrokSharp
         }
 
         /// <summary>
-        /// Event fires when Ngrok have been downloaded and unzipped.
+        ///     Event fires when Ngrok have been downloaded and unzipped.
         /// </summary>
         public event EventHandler DownloadAndUnZipDone;
 
         /// <summary>
-        /// Downloads Ngrok.
+        ///     Downloads Ngrok.
         /// </summary>
         public void DownloadNgrok()
         {
@@ -79,16 +79,16 @@ namespace NgrokSharp
         }
 
         /// <summary>
-        /// Registers your authtoken, if empty your sessions will be restricted to 2 hours.
+        ///     Registers your authtoken, if empty your sessions will be restricted to 2 hours.
         /// </summary>
         /// <param name="authtoken">The token</param>
         public void RegisterAuthToken(string authtoken)
         {
             _platformCode.RegisterAuthToken(authtoken);
         }
-        
+
         /// <summary>
-        /// Starts Ngrok
+        ///     Starts Ngrok
         /// </summary>
         /// <param name="region">DataCenter region</param>
         public void StartNgrok(Region region = Region.UnitedStates)
@@ -108,15 +108,15 @@ namespace NgrokSharp
 
             _platformCode.StartNgrok(selectedRegion);
         }
-        
+
         /// <summary>
-        /// Starts a Ngrok tunnel
+        ///     Starts a Ngrok tunnel
         /// </summary>
         /// <param name="startTunnelDto"></param>
         /// <returns>A httpResponseMessage that can be parse into TunnelDetailDTO</returns>
         /// <exception cref="ArgumentNullException">The input, can't be null</exception>
         /// <exception cref="ArgumentException">Missing values in input</exception>
-        public async Task<HttpResponseMessage> StartTunnel(StartTunnelDTO startTunnelDto)
+        public async Task<HttpResponseMessage> StartTunnelAsync(StartTunnelDTO startTunnelDto)
         {
             if (startTunnelDto == null) throw new ArgumentNullException(nameof(startTunnelDto));
 
@@ -136,7 +136,7 @@ namespace NgrokSharp
         /// </summary>
         /// <param name="name">Name of the tunnel to stop</param>
         /// <returns>A httpResponseMessage that will contain 204 status code, if successful</returns>
-        public async Task<HttpResponseMessage> StopTunnel(string name)
+        public async Task<HttpResponseMessage> StopTunnelAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
@@ -145,18 +145,26 @@ namespace NgrokSharp
 
             return httpResponseMessage;
         }
-        
+
         /// <summary>
-        /// Gets a list of the tunnels
+        ///     Gets a list of the tunnels
         /// </summary>
         /// <returns>A httpResponseMessage, that can be parse into TunnelsDetailsDTO </returns>
-        public async Task<HttpResponseMessage> ListTunnels()
+        public async Task<HttpResponseMessage> ListTunnelsAsync()
         {
             var httpResponseMessage = await _httpClient.GetAsync($"{_ngrokLocalUrl}/tunnels");
 
             return httpResponseMessage;
         }
-        
+
+        /// <summary>
+        ///     Stops Ngrok
+        /// </summary>
+        public void StopNgrok()
+        {
+            _platformCode.StopNgrok();
+        }
+
         protected virtual void OnDownloadAndUnZipDone(EventArgs e)
         {
             var handler = DownloadAndUnZipDone;
@@ -193,14 +201,6 @@ namespace NgrokSharp
                 File.Delete("ngrok-stable-amd64.zip");
 
             OnDownloadAndUnZipDone(EventArgs.Empty);
-        }
-        
-        /// <summary>
-        /// Stops Ngrok
-        /// </summary>
-        public void StopNgrok()
-        {
-            _platformCode.StopNgrok();
         }
     }
 }

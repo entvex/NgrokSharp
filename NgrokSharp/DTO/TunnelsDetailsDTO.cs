@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace NgrokSharp
+namespace NgrokSharp.DTO
 {
     public partial class TunnelsDetailsDTO
     {
