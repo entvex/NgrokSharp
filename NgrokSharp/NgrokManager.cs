@@ -73,7 +73,7 @@ namespace NgrokSharp
             using var webClient = new WebClient();
             await webClient.DownloadFileTaskAsync(_ngrokDownloadUrl, $"{_downloadFolder}ngrok-stable-amd64.zip");
             var fastZip = new FastZip();
-            await Task.Run(() => fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null));
+            await Task.Run(() => fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null));
             if (OperatingSystem.IsLinux())
             {
                 UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
