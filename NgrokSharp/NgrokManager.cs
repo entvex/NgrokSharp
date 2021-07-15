@@ -63,6 +63,10 @@ namespace NgrokSharp
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
                 _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
             }
+            if(!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
         }
 
         /// <summary>

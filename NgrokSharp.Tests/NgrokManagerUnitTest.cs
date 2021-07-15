@@ -21,6 +21,10 @@ namespace NgrokSharp.Tests
         {
             _ngrokYml = ngrokManagerOneTimeSetUp.environmentVariableNgrokYml;
             _ngrokBytes = ngrokManagerOneTimeSetUp.ngrokBytes;
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
         }
 
         public void Dispose()
@@ -57,6 +61,10 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var webClient = new WebClient();
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -93,6 +101,10 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var webClient = new WebClient();
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -128,6 +140,10 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var webClient = new WebClient();
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -172,6 +188,10 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_TestOptionalRegions_True(string regionNameShort, string regionNameFull)
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -225,6 +245,10 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_MissingAddrArgumentNullException_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -259,6 +283,10 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_MissingNameArgumentNullException_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -293,6 +321,10 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_MissingProtoArgumentNullException_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -327,6 +359,10 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_StartTunnelDTOIsNullArgumentNullException_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -353,6 +389,10 @@ namespace NgrokSharp.Tests
         public async Task RegisterAuthToken_ThrowsExptionUsingRegisterAuthTokenWhileAlreadyStarted_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -382,6 +422,10 @@ namespace NgrokSharp.Tests
         public async Task RegisterAuthToken_AddNewAuthTokenAfterStop_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             var are = new AutoResetEvent(false);
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
@@ -421,6 +465,10 @@ namespace NgrokSharp.Tests
         public async Task StopTunnel_StopATunnelThatIsRunning_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -460,6 +508,10 @@ namespace NgrokSharp.Tests
         public async Task StopTunnel_StopTunnelNameIsNullArgumentNullException_True()
         {
             // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
@@ -496,6 +548,10 @@ namespace NgrokSharp.Tests
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
             var fastZip = new FastZip();
