@@ -33,16 +33,15 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
-        public void DownloadNgrok_CheckIfNgrokIsDownloaded_True()
+        public async Task DownloadNgrok_CheckIfNgrokIsDownloaded_True()
         {
             // ARRANGE
             var are = new AutoResetEvent(false);
 
             var ngrokManager = new NgrokManager();
-            ngrokManager.DownloadAndUnZipDone += delegate { are.Set(); };
             // ACT
 
-            ngrokManager.DownloadNgrok();
+            await ngrokManager.DownloadAndUnzipNgrokAsync();
             // ASSERT
 
             are.WaitOne(TimeSpan.FromSeconds(30));

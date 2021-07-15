@@ -35,9 +35,11 @@ namespace NgrokSharp
         private readonly HttpClient _httpClient;
 
         private readonly Uri _ngrokDownloadUrl;
-        private readonly Uri _ngrokLocalUrl = new("http://localhost:4040/api");
+        private readonly Uri _ngrokLocalUrl;
 
         private readonly IPlatformStrategy _platformCode;
+
+        private readonly string _downloadFolder;
 
         /// <summary>
         ///     Constructor for NgrokManager
@@ -45,18 +47,21 @@ namespace NgrokSharp
         public NgrokManager()
         {
             _httpClient = new HttpClient();
+            _ngrokLocalUrl = new Uri("http://localhost:4040/api");
 
             //Detect OS and set Platform and Url
             if (OperatingSystem.IsWindows())
             {
                 _platformCode = new PlatformWindows();
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
+                _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
             }
 
             if (OperatingSystem.IsLinux())
             {
                 _platformCode = new PlatformLinux();
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
+                _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
             }
         }
 
@@ -66,17 +71,17 @@ namespace NgrokSharp
         public async Task DownloadAndUnzipNgrokAsync()
         {
             using var webClient = new WebClient();
-            await webClient.DownloadFileTaskAsync(_ngrokDownloadUrl, "ngrok-stable-amd64.zip");
+            await webClient.DownloadFileTaskAsync(_ngrokDownloadUrl, $"{_downloadFolder}ngrok-stable-amd64.zip");
             var fastZip = new FastZip();
-            await Task.Run(() => fastZip.ExtractZip("ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null));
+            await Task.Run(() => fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", Directory.GetCurrentDirectory(), null));
             if (OperatingSystem.IsLinux())
             {
-                UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
-                UnixFileSystemInfo.GetFileSystemEntry("ngrok-stable-amd64.zip").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok-stable-amd64.zip").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             }
-            if (File.Exists("ngrok-stable-amd64.zip"))
+            if (File.Exists($"{_downloadFolder}ngrok-stable-amd64.zip"))
             {
-                File.Delete("ngrok-stable-amd64.zip");
+                File.Delete($"{_downloadFolder}ngrok-stable-amd64.zip");
             }
         }
 

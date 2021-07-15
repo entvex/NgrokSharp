@@ -6,10 +6,12 @@ namespace NgrokSharp.PlatformSpecific.Windows
     public class PlatformWindows : IPlatformStrategy
     {
         private Process _ngrokProcess;
+        private readonly string _downloadFolder;
 
         public PlatformWindows()
         {
             _ngrokProcess = null;
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
         }
 
         public void RegisterAuthToken(string authtoken)
@@ -20,7 +22,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
                 {
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "ngrok.exe",
+                    FileName = $"{_downloadFolder}ngrok.exe",
                     Arguments = $"authtoken {authtoken}"
                 });
             }
@@ -42,7 +44,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
                     RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    FileName = "ngrok.exe",
+                    FileName = $"{_downloadFolder}ngrok.exe",
                     Arguments = $"start --none -region {region}"
                 };
                 try

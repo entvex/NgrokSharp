@@ -7,22 +7,24 @@ namespace NgrokSharp.PlatformSpecific.Linux
     public class PlatformLinux : IPlatformStrategy
     {
         private Process _ngrokProcess;
+        private readonly string _downloadFolder;
 
         public PlatformLinux()
         {
             _ngrokProcess = null;
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
         }
 
         public void RegisterAuthToken(string authtoken)
         {
-            UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+            UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             if(_ngrokProcess == null)
             {
                 Process.Start(new ProcessStartInfo()
                 {
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "ngrok",
+                    FileName = $"{_downloadFolder}ngrok",
                     Arguments = $"authtoken {authtoken}"
                 });
             }
@@ -45,7 +47,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
                     RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    FileName = "ngrok",
+                    FileName = $"{_downloadFolder}ngrok",
                     Arguments = $"start --none -region {region}"
                 };
                 try
