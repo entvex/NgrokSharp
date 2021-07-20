@@ -8,6 +8,7 @@
         <PackageLicenseUrl>https://github.com/entvex/NgrokSharp/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/entvex/NgrokSharp</RepositoryUrl>
         <Title>NgrokSharp</Title>
+        <Version>1.0.8-beta</Version>
     </PropertyGroup>
 
     <ItemGroup>

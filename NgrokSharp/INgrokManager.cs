@@ -5,11 +5,10 @@ using NgrokSharp.DTO;
 
 namespace NgrokSharp
 {
-    public interface INgrokManager
+    public interface INgrokManager : IDisposable
     {
-        event EventHandler DownloadAndUnZipDone;
-        void DownloadNgrok();
-        void RegisterAuthToken(string authtoken);
+        Task DownloadAndUnzipNgrokAsync();
+        Task RegisterAuthTokenAsync(string authtoken);
         void StartNgrok(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         void StopNgrok();
         Task<HttpResponseMessage> StartTunnelAsync(StartTunnelDTO startTunnelDto);
