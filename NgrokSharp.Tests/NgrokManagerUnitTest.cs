@@ -15,7 +15,7 @@ namespace NgrokSharp.Tests
     {
         private readonly byte[] _ngrokBytes;
         private readonly string _ngrokYml = "authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        private readonly string _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
+        private readonly string _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
 
         public NgrokManagerUnitTest(NgrokManagerOneTimeSetUp ngrokManagerOneTimeSetUp)
         {
@@ -454,9 +454,9 @@ namespace NgrokSharp.Tests
 
             string acualNgrokYml = null;
 
-            if (OperatingSystem.IsWindows()) acualNgrokYml = File.ReadAllText($"{path.FullName}\\ngrok.yml");
+            if (OperatingSystem.IsWindows()) acualNgrokYml = File.ReadAllText($"{path.FullName + Path.DirectorySeparatorChar}ngrok.yml");
 
-            if (OperatingSystem.IsLinux()) acualNgrokYml = File.ReadAllText($"{path.FullName}/ngrok.yml");
+            if (OperatingSystem.IsLinux()) acualNgrokYml = File.ReadAllText($"{path.FullName + Path.DirectorySeparatorChar}ngrok.yml");
 
             Assert.Equal("authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n", acualNgrokYml);
         }

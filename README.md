@@ -96,9 +96,9 @@ Thanks to these
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/entvex/NgrokSharp.svg?style=for-the-badge
-[contributors-url]: https://github.com/entvex/repo/graphs/contributors
+[contributors-url]: https://github.com/entvex/NgrokSharp/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/entvex/NgrokSharp.svg?style=for-the-badge
-[forks-url]: https://github.com/entvex/repo/network/members
+[forks-url]: https://github.com/entvex/NgrokSharp/network/members
 [stars-shield]: https://img.shields.io/github/stars/entvex/NgrokSharp.svg?style=for-the-badge
 [stars-url]: https://github.com/entvex/NgrokSharp/stargazers
 [issues-shield]: https://img.shields.io/github/issues/entvex/NgrokSharp.svg?style=for-the-badge
@@ -108,4 +108,4 @@ Thanks to these
 [coverage-shield]: https://img.shields.io/codecov/c/github/entvex/NgrokSharp/master?style=for-the-badge
 [coverage-url]: https://app.codecov.io/gh/entvex/NgrokSharp
 [discord-shield]: https://img.shields.io/discord/865308817172725770?style=for-the-badge
-[discord-url]: https://discord.gg/dgdDwFqrRF
+[discord-url]: https://discord.gg/T3sarz6k5a

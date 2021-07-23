@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace NgrokSharp.PlatformSpecific.Windows
@@ -12,7 +13,7 @@ namespace NgrokSharp.PlatformSpecific.Windows
         public PlatformWindows()
         {
             _ngrokProcess = null;
-            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
         }
 
         public async Task RegisterAuthTokenAsync(string authtoken)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Mono.Unix;
 
@@ -13,7 +14,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
         public PlatformLinux()
         {
             _ngrokProcess = null;
-            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
         }
 
         public async Task RegisterAuthTokenAsync(string authtoken)
@@ -21,14 +22,17 @@ namespace NgrokSharp.PlatformSpecific.Linux
             UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             if(_ngrokProcess == null)
             {
-                using var registerProcess = new Process();
-                registerProcess.StartInfo = new ProcessStartInfo()
+                using var registerProcess = new Process
                 {
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = $"{_downloadFolder}ngrok",
-                    Arguments = $"authtoken {authtoken}"
+                    StartInfo = new ProcessStartInfo()
+                    {
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        FileName = $"{_downloadFolder}ngrok",
+                        Arguments = $"authtoken {authtoken}"
+                    }
                 };
+                registerProcess.Start();
                 await registerProcess.WaitForExitAsync();
             }
             else
@@ -39,7 +43,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
 
         public void StartNgrok(string region)
         {
-            UnixFileSystemInfo.GetFileSystemEntry("ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+            UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             if(_ngrokProcess == null)
             {
                 _ngrokProcess = new Process();
@@ -61,8 +65,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
                 {
                     if (e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
                     {
-                        _ngrokProcess = new Process();
-                        _ngrokProcess.StartInfo = startInfo;
+                        _ngrokProcess = new Process {StartInfo = startInfo};
                     }
                 }
                 _ngrokProcess.Start();

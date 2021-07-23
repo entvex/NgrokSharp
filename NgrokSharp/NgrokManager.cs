@@ -48,20 +48,19 @@ namespace NgrokSharp
         {
             _httpClient = new HttpClient();
             _ngrokLocalUrl = new Uri("http://localhost:4040/api");
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
 
             //Detect OS and set Platform and Url
             if (OperatingSystem.IsWindows())
             {
                 _platformCode = new PlatformWindows();
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
-                _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\NgrokSharp\\";
             }
 
             if (OperatingSystem.IsLinux())
             {
                 _platformCode = new PlatformLinux();
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
-                _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NgrokSharp/";
             }
             if(!Directory.Exists(_downloadFolder))
             {
@@ -78,11 +77,13 @@ namespace NgrokSharp
             await webClient.DownloadFileTaskAsync(_ngrokDownloadUrl, $"{_downloadFolder}ngrok-stable-amd64.zip");
             var fastZip = new FastZip();
             await Task.Run(() => fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null));
+            
             if (OperatingSystem.IsLinux())
             {
                 UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
-                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok-stable-amd64.zip").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok-stable-amd64.zip").FileAccessPermissions = FileAccessPermissions.AllPermissions;
             }
+            
             if (File.Exists($"{_downloadFolder}ngrok-stable-amd64.zip"))
             {
                 File.Delete($"{_downloadFolder}ngrok-stable-amd64.zip");
