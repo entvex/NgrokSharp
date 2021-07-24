@@ -69,6 +69,41 @@ Install via [nuget.org](https://www.nuget.org/packages/NgrokSharp/)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+
+Code example
+```csharp
+static async Task Main(string[] args)
+{
+    INgrokManager _ngrokManager;
+    _ngrokManager = new NgrokManager();
+
+    await _ngrokManager.DownloadAndUnzipNgrokAsync();
+
+    // Insert your token, if you have one.
+    //_ngrokManager.RegisterAuthTokenAsync("Your token");
+
+    _ngrokManager.StartNgrok();
+
+    var tunnel = new StartTunnelDTO
+    {
+        name = "reverse proxy",
+        proto = "http",
+        addr = "8080"
+    };
+
+    var httpResponseMessage = await _ngrokManager.StartTunnelAsync(tunnel);
+
+    if ((int)httpResponseMessage.StatusCode == 201)
+    {
+        var tunnelDetail =
+            JsonConvert.DeserializeObject<TunnelDetailDTO>(
+                await httpResponseMessage.Content.ReadAsStringAsync());
+
+        Console.WriteLine(tunnelDetail.PublicUrl);
+    }
+}
+```
+
 Projects using NgrokSharp
 
 [NgrokGUI](https://github.com/entvex/NgrokGUI)
