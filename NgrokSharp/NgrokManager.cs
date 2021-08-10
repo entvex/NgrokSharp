@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.Zip;
 using Mono.Unix;
 using Newtonsoft.Json;
 using NgrokSharp.DTO;
@@ -75,9 +75,9 @@ namespace NgrokSharp
         {
             using var webClient = new WebClient();
             await webClient.DownloadFileTaskAsync(_ngrokDownloadUrl, $"{_downloadFolder}ngrok-stable-amd64.zip");
-            var fastZip = new FastZip();
-            await Task.Run(() => fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null));
-            
+
+            await Task.Run(() => ZipFile.ExtractToDirectory($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, true));
+
             if (OperatingSystem.IsLinux())
             {
                 UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;

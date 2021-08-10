@@ -80,7 +80,7 @@ static async Task Main(string[] args)
     await _ngrokManager.DownloadAndUnzipNgrokAsync();
 
     // Insert your token, if you have one.
-    //_ngrokManager.RegisterAuthTokenAsync("Your token");
+    //await _ngrokManager.RegisterAuthTokenAsync("Your token");
 
     _ngrokManager.StartNgrok();
 
