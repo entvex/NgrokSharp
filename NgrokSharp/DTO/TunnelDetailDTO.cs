@@ -1,74 +1,74 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace NgrokSharp.DTO
 {
     public partial class TunnelDetailDTO
     {
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("uri", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("uri")]
         public string Uri { get; set; }
 
-        [JsonProperty("public_url", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("public_url")]
         public Uri PublicUrl { get; set; }
 
-        [JsonProperty("proto", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("proto")]
         public string Proto { get; set; }
 
-        [JsonProperty("config", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("config")]
         public Config Config { get; set; }
 
-        [JsonProperty("metrics", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("metrics")]
         public Metrics Metrics { get; set; }
     }
 
     public partial class Config
     {
-        [JsonProperty("addr", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("addr")]
         public Uri Addr { get; set; }
 
-        [JsonProperty("inspect", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("inspect")]
         public bool? Inspect { get; set; }
     }
 
     public partial class Metrics
     {
-        [JsonProperty("conns", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("conns")]
         public Conns Conns { get; set; }
 
-        [JsonProperty("http", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("http")]
         public Conns Http { get; set; }
     }
 
     public partial class Conns
     {
-        [JsonProperty("count", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("count")]
         public long? Count { get; set; }
 
-        [JsonProperty("gauge", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("gauge")]
         public long? Gauge { get; set; }
 
-        [JsonProperty("rate1", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("rate1")]
         public long? Rate1 { get; set; }
 
-        [JsonProperty("rate5", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("rate5")]
         public long? Rate5 { get; set; }
 
-        [JsonProperty("rate15", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("rate15")]
         public long? Rate15 { get; set; }
 
-        [JsonProperty("p50", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("p50")]
         public long? P50 { get; set; }
 
-        [JsonProperty("p90", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("p90")]
         public long? P90 { get; set; }
 
-        [JsonProperty("p95", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("p95")]
         public long? P95 { get; set; }
 
-        [JsonProperty("p99", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("p99")]
         public long? P99 { get; set; }
     }
 }
