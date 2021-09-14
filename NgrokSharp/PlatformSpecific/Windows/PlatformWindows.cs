@@ -2,21 +2,26 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace NgrokSharp.PlatformSpecific.Windows
 {
-    public class PlatformWindows : IPlatformStrategy
+    public class PlatformWindows : PlatformStrategy
     {
-        private Process _ngrokProcess;
-        private readonly string _downloadFolder;
-
         public PlatformWindows()
         {
             _ngrokProcess = null;
             _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
         }
 
-        public async Task RegisterAuthTokenAsync(string authtoken)
+        public PlatformWindows(ILogger logger)
+        {
+            _logger = logger;
+            _ngrokProcess = null;
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
+        }
+
+        public override async Task RegisterAuthTokenAsync(string authtoken)
         {
             if (_ngrokProcess == null)
             {
@@ -37,7 +42,11 @@ namespace NgrokSharp.PlatformSpecific.Windows
             }
         }
 
-        public void StartNgrok(string region)
+        /// <summary>
+        /// Starts Ngrok normally 
+        /// </summary>
+        /// <param name="region"></param>
+        public override void StartNgrok(string region)
         {
             if (_ngrokProcess == null)
             {
@@ -71,21 +80,47 @@ namespace NgrokSharp.PlatformSpecific.Windows
                 throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
             }
         }
-
-        public void StopNgrok()
+        
+        public override void StartNgrokWithLogging(string region)
         {
-            if (_ngrokProcess != null)
+            if (_ngrokProcess == null)
             {
-                _ngrokProcess.Refresh();
-                if (!_ngrokProcess.HasExited)
+                _ngrokProcess = new Process();
+                var startInfo = new ProcessStartInfo
                 {
-                    _ngrokProcess.Kill();
-                    _ngrokProcess.Close();
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = $"{_downloadFolder}ngrok.exe",
+                    Arguments = $"start --none -region {region} --log=stdout"
+                };
+                try
+                {
+                    _ngrokProcess.StartInfo = startInfo;
                 }
-                _ngrokProcess = null;
+                catch (InvalidOperationException e)
+                {
+                    if (e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
+                    {
+                        _ngrokProcess = new Process();
+                        _ngrokProcess.StartInfo = startInfo;
+                    }
+                }
+                _ngrokProcess.Start();
+                
+                _ngrokProcess.OutputDataReceived += ProcessStandardOutput;
+                _ngrokProcess.ErrorDataReceived += ProcessStandardError;
+                _ngrokProcess.Start();
+                _ngrokProcess.BeginOutputReadLine();
+                _ngrokProcess.BeginErrorReadLine();
+                
+            }
+            else
+            {
+                throw new Exception("The Ngrok process is already running. Please use StopNgrok() and then StartNgrok again.");
             }
         }
-
-        public void Dispose() => _ngrokProcess.Dispose();
     }
 }

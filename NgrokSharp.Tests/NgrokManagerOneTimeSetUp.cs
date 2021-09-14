@@ -14,7 +14,7 @@ namespace NgrokSharp.Tests
         private readonly Uri _ngrokDownloadUrlWin =
             new("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip");
 
-        public string? environmentVariableNgrokYml;
+        public string environmentVariableNgrokYml;
 
         public readonly byte[] ngrokBytes;
 
