@@ -1,35 +1,35 @@
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace NgrokSharp.DTO
 {
     public partial class TunnelsDetailsDTO
     {
-        [JsonProperty("tunnels", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("tunnels")]
         public Tunnel[] Tunnels { get; set; }
 
-        [JsonProperty("uri", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("uri")]
         public string Uri { get; set; }
     }
 
     public partial class Tunnel
     {
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("uri", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("uri")]
         public string Uri { get; set; }
 
-        [JsonProperty("public_url", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("public_url")]
         public Uri PublicUrl { get; set; }
 
-        [JsonProperty("proto", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("proto")]
         public string Proto { get; set; }
 
-        [JsonProperty("config", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("config")]
         public Config Config { get; set; }
 
-        [JsonProperty("metrics", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("metrics")]
         public Metrics Metrics { get; set; }
     }
 }

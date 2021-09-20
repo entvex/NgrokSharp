@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using NgrokSharp.JsonConverter;
 
 namespace NgrokSharp.DTO
 {
@@ -11,7 +12,7 @@ namespace NgrokSharp.DTO
         [JsonPropertyName("uri")]
         public string Uri { get; set; }
 
-        [JsonPropertyName("public_url")]
+        [JsonPropertyName("public_url"), JsonConverter(typeof(JsonConverterUri))]
         public Uri PublicUrl { get; set; }
 
         [JsonPropertyName("proto")]

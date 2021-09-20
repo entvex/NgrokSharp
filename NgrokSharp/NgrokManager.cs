@@ -5,11 +5,11 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Mono.Unix;
-using Newtonsoft.Json;
 using NgrokSharp.DTO;
 using NgrokSharp.PlatformSpecific;
 using NgrokSharp.PlatformSpecific.Linux;
@@ -204,7 +204,7 @@ namespace NgrokSharp
             {
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(startTunnelDto.proto));
             }
-            return await _httpClient.PostAsync($"{_ngrokLocalUrl}/tunnels", new StringContent(JsonConvert.SerializeObject(startTunnelDto), Encoding.UTF8, "application/json"),cancellationToken);
+            return await _httpClient.PostAsync($"{_ngrokLocalUrl}/tunnels", new StringContent(JsonSerializer.Serialize(startTunnelDto), Encoding.UTF8, "application/json"),cancellationToken);
         }
 
         /// <summary>
