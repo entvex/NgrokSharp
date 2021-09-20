@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using NgrokSharp.DTO;
 using Xunit;
 
@@ -224,7 +224,7 @@ namespace NgrokSharp.Tests
 
             // ASSERT
             var tunnelDetail =
-                JsonConvert.DeserializeObject<TunnelDetailDTO>(
+                JsonSerializer.Deserialize<TunnelDetailDTO>(
                     await httpResponseMessage.Content.ReadAsStringAsync());
 
             Assert.Contains($".{regionNameShort}.", tunnelDetail.PublicUrl.ToString());
@@ -584,7 +584,7 @@ namespace NgrokSharp.Tests
             var httpResponseMessage = await ngrokManager.ListTunnelsAsync();
 
             var tunnelDetail =
-                JsonConvert.DeserializeObject<TunnelsDetailsDTO>(
+                JsonSerializer.Deserialize<TunnelsDetailsDTO>(
                     await httpResponseMessage.Content.ReadAsStringAsync());
 
             // ASSERT

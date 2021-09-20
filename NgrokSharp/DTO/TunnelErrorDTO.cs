@@ -1,25 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace NgrokSharp.DTO
 {
     public partial class TunnelErrorDTO
     {
-        [JsonProperty("error_code", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("error_code")]
         public long? ErrorCode { get; set; }
 
-        [JsonProperty("status_code", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("status_code")]
         public long? StatusCode { get; set; }
 
-        [JsonProperty("msg", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("msg")]
         public string Msg { get; set; }
 
-        [JsonProperty("details", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("details")]
         public Details Details { get; set; }
     }
 
     public partial class Details
     {
-        [JsonProperty("err", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("err")]
         public string Err { get; set; }
     }
 }
