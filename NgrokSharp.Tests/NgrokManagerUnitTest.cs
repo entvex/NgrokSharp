@@ -70,9 +70,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -84,16 +82,6 @@ namespace NgrokSharp.Tests
             var downloadedString = await webClient.DownloadStringTaskAsync("http://localhost:4040/api/");
 
             Assert.False(string.IsNullOrWhiteSpace(downloadedString));
-        }
-
-        private DirectoryInfo SetNgrokYmlLinux()
-        {
-            var path = Directory.CreateDirectory(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
-
-            File.WriteAllText($"{path.FullName}/ngrok.yml", _ngrokYml);
-
-            return path;
         }
 
         [Fact]
@@ -110,9 +98,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -134,8 +120,8 @@ namespace NgrokSharp.Tests
 
             Assert.Contains("http://localhost:30000", downloadedString);
         }
-
-        [Fact(Skip = "Issues with the token, will fix later")]
+        
+        [Fact]
         public async Task StartTunnel_UseSubDomainGuid_True()
         {
             // ARRANGE
@@ -149,10 +135,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
-
+            SetNgrokYml();
 
             var newGuid = Guid.NewGuid().ToString();
 
@@ -197,9 +180,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var parsedEnum = (NgrokManager.Region) Enum.Parse(typeof(NgrokManager.Region), regionNameFull, true);
 
@@ -230,12 +211,12 @@ namespace NgrokSharp.Tests
             Assert.Contains($".{regionNameShort}.", tunnelDetail.PublicUrl.ToString());
         }
 
-        private DirectoryInfo SetNgrokYmlWindows()
+        private DirectoryInfo SetNgrokYml()
         {
             var path = Directory.CreateDirectory(
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ngrok2"));
 
-            File.WriteAllText($"{path.FullName}\\ngrok.yml", _ngrokYml);
+            File.WriteAllText($"{path.FullName+Path.DirectorySeparatorChar}ngrok.yml", _ngrokYml);
 
             return path;
         }
@@ -254,9 +235,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -292,9 +271,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -330,9 +307,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -368,9 +343,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -398,9 +371,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
             // ACT
@@ -432,11 +403,8 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            DirectoryInfo path = null;
-            if (OperatingSystem.IsWindows()) path = SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) path = SetNgrokYmlLinux();
-
+            DirectoryInfo path = SetNgrokYml();
+            
             var ngrokManager = new NgrokManager();
             ngrokManager.StartNgrok();
             //Wait for ngrok to start, it can be slow on some systems.
@@ -474,9 +442,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
 
@@ -517,9 +483,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
 
@@ -557,9 +521,7 @@ namespace NgrokSharp.Tests
             var fastZip = new FastZip();
             fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
 
-            if (OperatingSystem.IsWindows()) SetNgrokYmlWindows();
-
-            if (OperatingSystem.IsLinux()) SetNgrokYmlLinux();
+            SetNgrokYml();
 
             var ngrokManager = new NgrokManager();
 

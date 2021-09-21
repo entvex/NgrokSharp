@@ -96,7 +96,7 @@ static async Task Main(string[] args)
     if ((int)httpResponseMessage.StatusCode == 201)
     {
         var tunnelDetail =
-            JsonConvert.DeserializeObject<TunnelDetailDTO>(
+            JsonSerializer.Deserialize<TunnelDetailDTO>(
                 await httpResponseMessage.Content.ReadAsStringAsync());
 
         Console.WriteLine(tunnelDetail.PublicUrl);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Net;
 
 namespace NgrokSharp.Tests
@@ -26,8 +27,19 @@ namespace NgrokSharp.Tests
             if (OperatingSystem.IsLinux()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlLinux);
             if (OperatingSystem.IsMacOS()) ngrokBytes = webClient.DownloadData(_ngrokDownloadUrlMac);
 
-            environmentVariableNgrokYml =
-                Environment.GetEnvironmentVariable("NGROKYML", EnvironmentVariableTarget.User);
+            /*environmentVariableNgrokYml =
+                Environment.GetEnvironmentVariable("NGROKYML", EnvironmentVariableTarget.Process);*/
+            
+            foreach (DictionaryEntry environmentVariable in Environment.GetEnvironmentVariables())
+            {
+                if (environmentVariable.Key.ToString().Contains("NGROKYML"))
+                {
+                    environmentVariableNgrokYml = environmentVariable.Value.ToString();
+                    break;
+                }
+            }
+            
+            
         }
 
         public void Dispose()

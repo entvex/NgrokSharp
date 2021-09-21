@@ -22,7 +22,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
       env:
-        ngrokYml: ${{secrets.NGROKYML}}
+        NGROKYML: ${{ secrets.NGROKYML }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
