@@ -1,11 +1,13 @@
 name: .NET
 
+env:
+  NGROKYML_TOKEN: ${{ secrets.NGROKYML_TOKEN }}
+
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
 
 jobs:
   build:
@@ -21,8 +23,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-      env:
-        NGROKYML: ${{ secrets.NGROKYML }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
