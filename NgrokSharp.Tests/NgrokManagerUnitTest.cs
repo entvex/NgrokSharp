@@ -2,10 +2,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.Extensions.Logging;
 using NgrokSharp.DTO;
 using Xunit;
 
@@ -16,6 +18,7 @@ namespace NgrokSharp.Tests
         private readonly byte[] _ngrokBytes;
         private readonly string _ngrokYml = "authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
         private readonly string _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
+        ILogger<NgrokManagerUnitTest> logger;
 
         public NgrokManagerUnitTest(NgrokManagerOneTimeSetUp ngrokManagerOneTimeSetUp)
         {
@@ -552,6 +555,66 @@ namespace NgrokSharp.Tests
             // ASSERT
 
             Assert.Equal("foundryvtt", tunnelDetail.Tunnels[0].Name);
+        }
+
+        [Fact]
+        public async Task StartNgrokWithLogging_StartTunnel8080AndCheckLog_True()
+        {
+            // ARRANGE
+            var are = new AutoResetEvent(false);
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
+
+            var loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    builder.AddFile("app.log");
+                }
+            );
+
+            logger = loggerFactory.CreateLogger<NgrokManagerUnitTest>();
+            
+            File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
+
+            SetNgrokYml();
+
+            var ngrokManager = new NgrokManager(logger);
+
+            ngrokManager.StartNgrokWithLogging();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false"
+            };
+
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            string log;
+
+            using (var fileStream = File.Open("app.log", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (var streamReader = new StreamReader(fileStream, Encoding.Default))
+                {
+                    log = streamReader.ReadToEnd();
+                }
+            }
+
+            // ACT
+            are.WaitOne(TimeSpan.FromSeconds(4));
+
+            // ASSERT
+            Assert.Contains("client session established", log);
         }
     }
 }
