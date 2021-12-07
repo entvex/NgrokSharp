@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -18,7 +19,8 @@ namespace NgrokSharp.Tests
         private readonly byte[] _ngrokBytes;
         private readonly string _ngrokYml = "authtoken: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
         private readonly string _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
-        ILogger<NgrokManagerUnitTest> logger;
+        public static readonly HttpClient HttpClient = new HttpClient();
+        ILogger<NgrokManagerUnitTest> _logger;
 
         public NgrokManagerUnitTest(NgrokManagerOneTimeSetUp ngrokManagerOneTimeSetUp)
         {
@@ -63,7 +65,6 @@ namespace NgrokSharp.Tests
         public async Task StartNgrok_ShouldStartNgrok_True()
         {
             // ARRANGE
-            var webClient = new WebClient();
             if (!Directory.Exists(_downloadFolder))
             {
                 Directory.CreateDirectory(_downloadFolder);
@@ -82,7 +83,7 @@ namespace NgrokSharp.Tests
             Thread.Sleep(1000);
 
             // ASSERT
-            var downloadedString = await webClient.DownloadStringTaskAsync("http://localhost:4040/api/");
+            var downloadedString = await HttpClient.GetStringAsync("http://localhost:4040/api/");
 
             Assert.False(string.IsNullOrWhiteSpace(downloadedString));
         }
@@ -91,7 +92,6 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_StartTunnel8080_True()
         {
             // ARRANGE
-            var webClient = new WebClient();
             if (!Directory.Exists(_downloadFolder))
             {
                 Directory.CreateDirectory(_downloadFolder);
@@ -119,7 +119,7 @@ namespace NgrokSharp.Tests
             await ngrokManager.StartTunnelAsync(startTunnelDto);
 
             // ASSERT
-            var downloadedString = await webClient.DownloadStringTaskAsync("http://localhost:4040/api/tunnels/foundryvtt");
+            var downloadedString = await HttpClient.GetStringAsync("http://localhost:4040/api/tunnels/foundryvtt");
 
             Assert.Contains("http://localhost:30000", downloadedString);
         }
@@ -128,7 +128,6 @@ namespace NgrokSharp.Tests
         public async Task StartTunnel_UseSubDomainGuid_True()
         {
             // ARRANGE
-            var webClient = new WebClient();
             if (!Directory.Exists(_downloadFolder))
             {
                 Directory.CreateDirectory(_downloadFolder);
@@ -159,7 +158,7 @@ namespace NgrokSharp.Tests
             await ngrokManager.StartTunnelAsync(startTunnelDto);
 
             // ASSERT
-            var downloadedString = await webClient.DownloadStringTaskAsync("http://localhost:4040/api/tunnels/foundryvtt");
+            var downloadedString = await HttpClient.GetStringAsync("http://localhost:4040/api/tunnels/foundryvtt");
 
             Assert.Contains(newGuid, downloadedString);
         }
@@ -573,7 +572,7 @@ namespace NgrokSharp.Tests
                 }
             );
 
-            logger = loggerFactory.CreateLogger<NgrokManagerUnitTest>();
+            _logger = loggerFactory.CreateLogger<NgrokManagerUnitTest>();
             
             File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
 
@@ -582,7 +581,7 @@ namespace NgrokSharp.Tests
 
             SetNgrokYml();
 
-            var ngrokManager = new NgrokManager(logger);
+            var ngrokManager = new NgrokManager(_logger);
 
             ngrokManager.StartNgrokWithLogging();
             //Wait for ngrok to start, it can be slow on some systems.

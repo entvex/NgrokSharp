@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <PackageVersion>1.0.10</PackageVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/entvex/NgrokSharp</PackageProjectUrl>
@@ -11,10 +11,11 @@
         <Version>1.0.8-beta</Version>
         <Description>A easy to use library for Ngrok.</Description>
         <Copyright>MIT</Copyright>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
       <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
     </ItemGroup>
 
