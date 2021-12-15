@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Mono.Unix;
 
 namespace NgrokSharp.PlatformSpecific.Linux
 {
@@ -17,7 +15,7 @@ namespace NgrokSharp.PlatformSpecific.Linux
 
         public override async Task RegisterAuthTokenAsync(string authtoken)
         {
-            UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
+            
             if(_ngrokProcess == null)
             {
                 using var registerProcess = new Process
@@ -41,7 +39,6 @@ namespace NgrokSharp.PlatformSpecific.Linux
 
         public override void StartNgrok(string region)
         {
-            UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
             if(_ngrokProcess == null)
             {
                 _ngrokProcess = new Process();
@@ -76,8 +73,6 @@ namespace NgrokSharp.PlatformSpecific.Linux
 
         public override void StartNgrokWithLogging(string region)
         {
-            UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
-
             if(_ngrokProcess == null)
             {
                 _ngrokProcess = new Process();

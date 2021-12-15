@@ -9,7 +9,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Mono.Unix;
 using NgrokSharp.DTO;
 using NgrokSharp.PlatformSpecific;
 using NgrokSharp.PlatformSpecific.Linux;
@@ -116,12 +115,6 @@ namespace NgrokSharp
 
             await Task.Run(() => ZipFile.ExtractToDirectory($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, true));
 
-            if (OperatingSystem.IsLinux())
-            {
-                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok").FileAccessPermissions = FileAccessPermissions.UserReadWriteExecute;
-                UnixFileSystemInfo.GetFileSystemEntry($"{_downloadFolder}ngrok-stable-amd64.zip").FileAccessPermissions = FileAccessPermissions.AllPermissions;
-            }
-            
             if (File.Exists($"{_downloadFolder}ngrok-stable-amd64.zip"))
             {
                 File.Delete($"{_downloadFolder}ngrok-stable-amd64.zip");
