@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace NgrokSharp.PlatformSpecific.Linux
 {
@@ -9,6 +10,13 @@ namespace NgrokSharp.PlatformSpecific.Linux
     {
         public PlatformLinux()
         {
+            _ngrokProcess = null;
+            _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
+        }
+        
+        public PlatformLinux(ILogger logger)
+        {
+            _logger = logger;
             _ngrokProcess = null;
             _downloadFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokSharp{Path.DirectorySeparatorChar}";
         }
@@ -94,10 +102,17 @@ namespace NgrokSharp.PlatformSpecific.Linux
                 {
                     if (e.Message == "Process is already associated with a real process, so the requested operation cannot be performed.")
                     {
-                        _ngrokProcess = new Process {StartInfo = startInfo};
+                        _ngrokProcess = new Process();
+                        _ngrokProcess.StartInfo = startInfo;
                     }
                 }
                 _ngrokProcess.Start();
+                
+                _ngrokProcess.OutputDataReceived += ProcessStandardOutput;
+                _ngrokProcess.ErrorDataReceived += ProcessStandardError;
+                _ngrokProcess.Start();
+                _ngrokProcess.BeginOutputReadLine();
+                _ngrokProcess.BeginErrorReadLine();
             }
             else
             {

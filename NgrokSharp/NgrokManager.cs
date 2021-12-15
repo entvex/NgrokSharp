@@ -89,7 +89,7 @@ namespace NgrokSharp
 
             if (OperatingSystem.IsLinux())
             {
-                _platformCode = new PlatformLinux();
+                _platformCode = new PlatformLinux(_logger);
                 _ngrokDownloadUrl = new Uri("https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip");
             }
 
