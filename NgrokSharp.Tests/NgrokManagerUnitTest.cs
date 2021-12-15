@@ -585,7 +585,7 @@ namespace NgrokSharp.Tests
 
             ngrokManager.StartNgrokWithLogging();
             //Wait for ngrok to start, it can be slow on some systems.
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
 
             var startTunnelDto = new StartTunnelDTO
             {
@@ -597,7 +597,7 @@ namespace NgrokSharp.Tests
 
             await ngrokManager.StartTunnelAsync(startTunnelDto);
             //Wait for ngrok to start, it can be slow on some systems.
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
 
             string log;
 
