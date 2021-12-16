@@ -57,11 +57,13 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-<!--
-### Built With
 
-* [Json.NET](https://www.newtonsoft.com)
--->
+### Features
+
+* Easy to use API
+* Downloads the correct Ngrok version for your platform
+* Supports different logging providers by implementing Microsoft.Extensions.Logging
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
