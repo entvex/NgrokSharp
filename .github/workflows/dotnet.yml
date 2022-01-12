@@ -2,6 +2,7 @@ name: .NET
 
 env:
   NGROKYML_TOKEN: ${{ secrets.NGROKYML_TOKEN }}
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience to skip caching NuGet packages and speed up the build
 
 on:
   push:
