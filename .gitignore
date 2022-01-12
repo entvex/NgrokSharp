@@ -32,3 +32,8 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# DocFX
+docfx_project/api/.manifest
+docfx_project/api/*.yml
+docs
