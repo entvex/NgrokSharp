@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Add your introductions here! </title>
+    <title>NgrokSharp </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Add your introductions here! ">
+    <meta name="title" content="NgrokSharp ">
     <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -67,8 +67,42 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="add-your-introductions-here">Add your introductions here!</h1>
+<h1 id="ngroksharp">NgrokSharp</h1>
 
+<p>NgrokSharp is a .NET library to manage the official <a href="https://ngrok.com/">Ngrok client</a>.</p>
+<h1 id="usage">Usage</h1>
+<h2 id="reverse-https-proxy-on-port-8080">Reverse http(s) proxy on port 8080</h2>
+<pre><code class="lang-csharp">static async Task Main(string[] args)
+{
+    INgrokManager _ngrokManager;
+    _ngrokManager = new NgrokManager();
+
+    await _ngrokManager.DownloadAndUnzipNgrokAsync();
+
+    // Insert your token, if you have one.
+    //await _ngrokManager.RegisterAuthTokenAsync(&quot;Your token&quot;);
+
+    _ngrokManager.StartNgrok();
+
+    var tunnel = new StartTunnelDTO
+    {
+        name = &quot;reverse proxy&quot;,
+        proto = &quot;http&quot;,
+        addr = &quot;8080&quot;
+    };
+
+    var httpResponseMessage = await _ngrokManager.StartTunnelAsync(tunnel);
+
+    if ((int)httpResponseMessage.StatusCode == 201)
+    {
+        var tunnelDetail =
+            JsonSerializer.Deserialize&lt;TunnelDetailDTO&gt;(
+                await httpResponseMessage.Content.ReadAsStringAsync());
+
+        Console.WriteLine(tunnelDetail.PublicUrl);
+    }
+}
+</code></pre>
 </article>
           </div>
           
