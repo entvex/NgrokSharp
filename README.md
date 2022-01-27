@@ -20,7 +20,7 @@
   <p align="center">
     A dotnet library for ngrok.
     <br />
-    <a href="https://github.com/entvex/NgrokSharp"><strong>Explore the docs »</strong></a>
+    <a href="https://entvex.github.io/NgrokSharp"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/entvex/NgrokSharp/issues">Report Bug</a>
