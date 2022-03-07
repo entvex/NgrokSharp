@@ -162,6 +162,43 @@ namespace NgrokSharp.Tests
 
             Assert.Contains(newGuid, downloadedString);
         }
+        
+        [Fact]
+        public async Task StartTunnel_WithCustomDomain_True()
+        {
+            // ARRANGE
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
+            File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
+
+            SetNgrokYml();
+
+            var ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false",
+                hostname = "ngroksharp.davidjensen.dev"
+            };
+
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
+
+            // ASSERT
+            var downloadedString = await HttpClient.GetStringAsync("http://localhost:4040/api/tunnels/foundryvtt");
+
+            Assert.Contains("ngroksharp.davidjensen.dev", downloadedString);
+        }
 
         [Theory]
         [InlineData("eu", "Europe")]
