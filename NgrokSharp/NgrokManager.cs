@@ -221,6 +221,14 @@ namespace NgrokSharp
         public async Task<HttpResponseMessage> ListTunnelsAsync(CancellationToken cancellationToken = default) => await _httpClient.GetAsync($"{_ngrokLocalUrl}/tunnels",cancellationToken);
 
         /// <summary>
+        /// Deletes all captured requests
+        /// </summary>
+        public async void DeleteCapturedRequests(CancellationToken cancellationToken = default)
+        {
+            await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/requests/http",cancellationToken);
+        }
+
+        /// <summary>
         ///     Stops Ngrok
         /// </summary>
         public void StopNgrok() => _platformCode.StopNgrok();
