@@ -652,5 +652,93 @@ namespace NgrokSharp.Tests
             // ASSERT
             Assert.Contains("client session established", log);
         }
+        
+        [Fact]
+        public async Task DeleteCapturedRequests_Return204WithNoBody_True()
+        {
+            // ARRANGE
+            var are = new AutoResetEvent(false);
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
+            File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
+
+            SetNgrokYml();
+
+            var ngrokManager = new NgrokManager();
+
+            ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false"
+            };
+
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            // ACT
+            are.WaitOne(TimeSpan.FromSeconds(1));
+            var httpResponseMessage = await ngrokManager.DeleteCapturedRequests();
+
+            // ASSERT
+            Assert.Equal(HttpStatusCode.NoContent, httpResponseMessage.StatusCode);
+        }
+        
+        [Fact]
+        public async Task ListCapturedRequests_ReturnCapturedRequestRootDTO_True()
+        {
+            // ARRANGE
+            var are = new AutoResetEvent(false);
+            if (!Directory.Exists(_downloadFolder))
+            {
+                Directory.CreateDirectory(_downloadFolder);
+            }
+            File.WriteAllBytes($"{_downloadFolder}ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip($"{_downloadFolder}ngrok-stable-amd64.zip", _downloadFolder, null);
+
+            SetNgrokYml();
+
+            var ngrokManager = new NgrokManager();
+
+            ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            var startTunnelDto = new StartTunnelDTO
+            {
+                name = "foundryvtt",
+                proto = "http",
+                addr = "30000",
+                bind_tls = "false"
+            };
+
+            await ngrokManager.StartTunnelAsync(startTunnelDto);
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            // ACT
+            are.WaitOne(TimeSpan.FromSeconds(1));
+            var httpResponseMessage = await ngrokManager.ListCapturedRequests();
+            
+            var capturedRequestRootDTO =
+                JsonSerializer.Deserialize<CapturedRequestRootDTO>(
+                    await httpResponseMessage.Content.ReadAsStringAsync());
+            
+            // ASSERT
+            Assert.Equal("/api/requests/http" , capturedRequestRootDTO.uri);
+        }
     }
 }

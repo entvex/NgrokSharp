@@ -213,7 +213,32 @@ namespace NgrokSharp
             }
             return await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/tunnels/{name}",cancellationToken);
         }
-
+        
+        /// <summary>
+        /// Returns a list of all HTTP requests captured for inspection. This will only return requests that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size) 
+        /// </summary>
+        /// <param name="limit">maximum number of requests to return</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> A HttpResponseMessage that can be parsed into a CapturedRequestRootDTO</returns>
+        public async Task<HttpResponseMessage> ListCapturedRequests(uint limit = 50, CancellationToken cancellationToken = default)
+        {
+            return await _httpClient.GetAsync($"{_ngrokLocalUrl}/requests/http?limit={limit}", cancellationToken);
+        }
+        
+        /// <summary>
+        /// Returns a list of all HTTP requests captured for inspection. This will only return requests that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size) 
+        /// </summary>
+        /// <param name="name">filter requests only for the given tunnel name</param>
+        /// <param name="limit">maximum number of requests to return</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> A HttpResponseMessage that can be parsed into a CapturedRequestRootDTO</returns>
+        public async Task<HttpResponseMessage> ListCapturedRequests(string name, uint limit = 50, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            return await _httpClient.GetAsync($"{_ngrokLocalUrl}/requests/http?tunnel_name={name}&limit={limit}", cancellationToken);
+        }
+        
         /// <summary>
         ///     Gets a list of the tunnels
         /// </summary>
@@ -223,10 +248,9 @@ namespace NgrokSharp
         /// <summary>
         /// Deletes all captured requests
         /// </summary>
-        public async void DeleteCapturedRequests(CancellationToken cancellationToken = default)
-        {
-            await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/requests/http",cancellationToken);
-        }
+        /// <param name="cancellationToken"></param>
+        /// <returns>204 status code with no response body</returns>
+        public async Task<HttpResponseMessage> DeleteCapturedRequests(CancellationToken cancellationToken = default) => await _httpClient.DeleteAsync($"{_ngrokLocalUrl}/requests/http",cancellationToken);
 
         /// <summary>
         ///     Stops Ngrok
