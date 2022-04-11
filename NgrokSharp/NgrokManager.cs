@@ -244,7 +244,22 @@ namespace NgrokSharp
         /// </summary>
         /// <returns>A httpResponseMessage, that can be parse into TunnelsDetailsDTO </returns>
         public async Task<HttpResponseMessage> ListTunnelsAsync(CancellationToken cancellationToken = default) => await _httpClient.GetAsync($"{_ngrokLocalUrl}/tunnels",cancellationToken);
+        
+        /// <summary>
+        /// Returns metadata and raw bytes of a captured request. The raw data is base64-encoded in the JSON response.
+        /// </summary>
+        /// <param name="requestId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">RequestId but not be null or whitespace</exception>
+        public async Task<HttpResponseMessage> CapturedRequestDetail(string requestId, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(requestId))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(requestId));
 
+            return await _httpClient.GetAsync($"{_ngrokLocalUrl}/requests/http/{requestId}", cancellationToken);
+        }
+        
         /// <summary>
         /// Deletes all captured requests
         /// </summary>
