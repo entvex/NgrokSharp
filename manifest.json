@@ -5,6 +5,18 @@
   "files": [
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.CapturedRequestRootDTO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.CapturedRequestRootDTO.html",
+          "hash": "glfgpIU/aoqwGSkHySuSWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/NgrokSharp.DTO.Config.yml",
       "output": {
         ".html": {
@@ -41,6 +53,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.Headers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.Headers.html",
+          "hash": "VtU1g+ABNNKT9RnwFVETQw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.Headers1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.Headers1.html",
+          "hash": "7ssK3PbHtU7XSxb6fV+liA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/NgrokSharp.DTO.Metrics.yml",
       "output": {
         ".html": {
@@ -53,11 +89,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.Request1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.Request1.html",
+          "hash": "JAjboCCrfB0cbyRSWrnZXA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.RequestDTO.Request.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.RequestDTO.Request.html",
+          "hash": "8hyByy4S/dPw9+dRRrGQqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.RequestDTO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.RequestDTO.html",
+          "hash": "YIfKuJWxHTQXslR5qt/MvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/NgrokSharp.DTO.Response.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/NgrokSharp.DTO.Response.html",
+          "hash": "RQKVgspTAMhVestj9BBICA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/NgrokSharp.DTO.StartTunnelDTO.yml",
       "output": {
         ".html": {
           "relative_path": "api/NgrokSharp.DTO.StartTunnelDTO.html",
-          "hash": "1ZTmV8TCa26NWbR7c5I0qQ=="
+          "hash": "N3MAco0CSedXGGhl/lC3Kg=="
         }
       },
       "is_incremental": false,
@@ -117,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NgrokSharp.DTO.html",
-          "hash": "4gLNk+rnDXb5D3S3BN/qow=="
+          "hash": "L5c+RBTmernhRuRL6ZUYnQ=="
         }
       },
       "is_incremental": false,
@@ -129,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NgrokSharp.INgrokManager.html",
-          "hash": "ugN5uNMOv4eeS2X+qD0hnA=="
+          "hash": "C8vMKahObFT7WuO1GpZMcQ=="
         }
       },
       "is_incremental": false,
@@ -177,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/NgrokSharp.NgrokManager.html",
-          "hash": "tNg2zT913ncSibe38/kpRA=="
+          "hash": "bgq6C5lLjq4E+U/KFzhSYw=="
         }
       },
       "is_incremental": false,
@@ -285,7 +369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "AGqxdJMgD77na2OzTSzV8g=="
+          "hash": "tjqxuFKG/gx7qr6xALjtEw=="
         }
       },
       "is_incremental": false,
@@ -360,7 +444,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 22,
+          "total_file_count": 29,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {

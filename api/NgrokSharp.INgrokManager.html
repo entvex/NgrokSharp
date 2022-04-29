@@ -85,6 +85,108 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_CapturedRequestDetail_System_String_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.CapturedRequestDetail(System.String%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L73">View Source</a>
+  </span>
+  <a id="NgrokSharp_INgrokManager_CapturedRequestDetail_" data-uid="NgrokSharp.INgrokManager.CapturedRequestDetail*"></a>
+  <h4 id="NgrokSharp_INgrokManager_CapturedRequestDetail_System_String_CancellationToken_" data-uid="NgrokSharp.INgrokManager.CapturedRequestDetail(System.String,CancellationToken)">CapturedRequestDetail(String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Returns metadata and raw bytes of a captured request. The raw data is base64-encoded in the JSON response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;HttpResponseMessage&gt; CapturedRequestDetail(string requestId, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">requestId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_DeleteCapturedRequests_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.DeleteCapturedRequests(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L79">View Source</a>
+  </span>
+  <a id="NgrokSharp_INgrokManager_DeleteCapturedRequests_" data-uid="NgrokSharp.INgrokManager.DeleteCapturedRequests*"></a>
+  <h4 id="NgrokSharp_INgrokManager_DeleteCapturedRequests_CancellationToken_" data-uid="NgrokSharp.INgrokManager.DeleteCapturedRequests(CancellationToken)">DeleteCapturedRequests(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Deletes all captured requests</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;HttpResponseMessage&gt; DeleteCapturedRequests(CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
+        <td><p>204 status code with no response body</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_DownloadAndUnzipNgrokAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.DownloadAndUnzipNgrokAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -132,14 +234,131 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_ListCapturedRequests_System_String_System_UInt32_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.ListCapturedRequests(System.String%2CSystem.UInt32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L65">View Source</a>
+  </span>
+  <a id="NgrokSharp_INgrokManager_ListCapturedRequests_" data-uid="NgrokSharp.INgrokManager.ListCapturedRequests*"></a>
+  <h4 id="NgrokSharp_INgrokManager_ListCapturedRequests_System_String_System_UInt32_CancellationToken_" data-uid="NgrokSharp.INgrokManager.ListCapturedRequests(System.String,System.UInt32,CancellationToken)">ListCapturedRequests(String, UInt32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Returns a list of all HTTP requests captured for inspection. This will only return requests that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;HttpResponseMessage&gt; ListCapturedRequests(string name, uint limit = null, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>filter requests only for the given tunnel name</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">limit</span></td>
+        <td><p>maximum number of requests to return</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
+        <td><p>A HttpResponseMessage that can be parsed into a CapturedRequestRootDTO</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_ListCapturedRequests_System_UInt32_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.ListCapturedRequests(System.UInt32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L57">View Source</a>
+  </span>
+  <a id="NgrokSharp_INgrokManager_ListCapturedRequests_" data-uid="NgrokSharp.INgrokManager.ListCapturedRequests*"></a>
+  <h4 id="NgrokSharp_INgrokManager_ListCapturedRequests_System_UInt32_CancellationToken_" data-uid="NgrokSharp.INgrokManager.ListCapturedRequests(System.UInt32,CancellationToken)">ListCapturedRequests(UInt32, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Returns a list of all HTTP requests captured for inspection. This will only return requests that are still in memory (ngrok evicts captured requests when their memory usage exceeds inspect_db_size)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;HttpResponseMessage&gt; ListCapturedRequests(uint limit = null, CancellationToken cancellationToken = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">limit</span></td>
+        <td><p>maximum number of requests to return</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
+        <td><p>A HttpResponseMessage that can be parsed into a CapturedRequestRootDTO</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_ListTunnelsAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.ListTunnelsAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L19">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L50">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_ListTunnelsAsync_" data-uid="NgrokSharp.INgrokManager.ListTunnelsAsync*"></a>
   <h4 id="NgrokSharp_INgrokManager_ListTunnelsAsync_CancellationToken_" data-uid="NgrokSharp.INgrokManager.ListTunnelsAsync(CancellationToken)">ListTunnelsAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a list of the tunnels</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -173,7 +392,8 @@
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
-        <td></td>
+        <td><p>A httpResponseMessage, that can be parse into TunnelsDetailsDTO</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -182,11 +402,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_RegisterAuthTokenAsync_System_String_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.RegisterAuthTokenAsync(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L13">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L17">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_RegisterAuthTokenAsync_" data-uid="NgrokSharp.INgrokManager.RegisterAuthTokenAsync*"></a>
   <h4 id="NgrokSharp_INgrokManager_RegisterAuthTokenAsync_System_String_" data-uid="NgrokSharp.INgrokManager.RegisterAuthTokenAsync(System.String)">RegisterAuthTokenAsync(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers your authtoken, if empty your sessions will be restricted to 2 hours.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -205,7 +426,8 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">authtoken</span></td>
-        <td></td>
+        <td><p>The token</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -229,11 +451,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_StartNgrok_NgrokSharp_NgrokManager_Region_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.StartNgrok(NgrokSharp.NgrokManager.Region)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L14">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L22">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_StartNgrok_" data-uid="NgrokSharp.INgrokManager.StartNgrok*"></a>
   <h4 id="NgrokSharp_INgrokManager_StartNgrok_NgrokSharp_NgrokManager_Region_" data-uid="NgrokSharp.INgrokManager.StartNgrok(NgrokSharp.NgrokManager.Region)">StartNgrok(NgrokManager.Region)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Starts Ngrok</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -252,7 +475,8 @@
       <tr>
         <td><a class="xref" href="NgrokSharp.NgrokManager.Region.html">NgrokManager.Region</a></td>
         <td><span class="parametername">region</span></td>
-        <td></td>
+        <td><p>DataCenter region</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -261,11 +485,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_StartNgrokWithLogging_NgrokSharp_NgrokManager_Region_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.StartNgrokWithLogging(NgrokSharp.NgrokManager.Region)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L15">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L27">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_StartNgrokWithLogging_" data-uid="NgrokSharp.INgrokManager.StartNgrokWithLogging*"></a>
   <h4 id="NgrokSharp_INgrokManager_StartNgrokWithLogging_NgrokSharp_NgrokManager_Region_" data-uid="NgrokSharp.INgrokManager.StartNgrokWithLogging(NgrokSharp.NgrokManager.Region)">StartNgrokWithLogging(NgrokManager.Region)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Only use this if you passed ILogger into the constructor</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -284,7 +509,8 @@
       <tr>
         <td><a class="xref" href="NgrokSharp.NgrokManager.Region.html">NgrokManager.Region</a></td>
         <td><span class="parametername">region</span></td>
-        <td></td>
+        <td><p>DataCenter region</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -293,11 +519,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_StartTunnelAsync_NgrokSharp_DTO_StartTunnelDTO_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.StartTunnelAsync(NgrokSharp.DTO.StartTunnelDTO%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L17">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L39">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_StartTunnelAsync_" data-uid="NgrokSharp.INgrokManager.StartTunnelAsync*"></a>
   <h4 id="NgrokSharp_INgrokManager_StartTunnelAsync_NgrokSharp_DTO_StartTunnelDTO_CancellationToken_" data-uid="NgrokSharp.INgrokManager.StartTunnelAsync(NgrokSharp.DTO.StartTunnelDTO,CancellationToken)">StartTunnelAsync(StartTunnelDTO, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Starts a Ngrok tunnel</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -336,7 +563,8 @@
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
-        <td></td>
+        <td><p>A httpResponseMessage that can be parse into TunnelDetailDTO</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -345,11 +573,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_StopNgrok.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.StopNgrok%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L16">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L31">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_StopNgrok_" data-uid="NgrokSharp.INgrokManager.StopNgrok*"></a>
   <h4 id="NgrokSharp_INgrokManager_StopNgrok" data-uid="NgrokSharp.INgrokManager.StopNgrok">StopNgrok()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Stops Ngrok</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -360,11 +589,12 @@
     <a href="https://github.com/entvex/NgrokSharp/new/master/apiSpec/new?filename=NgrokSharp_INgrokManager_StopTunnelAsync_System_String_CancellationToken_.md&amp;value=---%0Auid%3A%20NgrokSharp.INgrokManager.StopTunnelAsync(System.String%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L18">View Source</a>
+    <a href="https://github.com/entvex/NgrokSharp/blob/master/NgrokSharp/INgrokManager.cs/#L45">View Source</a>
   </span>
   <a id="NgrokSharp_INgrokManager_StopTunnelAsync_" data-uid="NgrokSharp.INgrokManager.StopTunnelAsync*"></a>
   <h4 id="NgrokSharp_INgrokManager_StopTunnelAsync_System_String_CancellationToken_" data-uid="NgrokSharp.INgrokManager.StopTunnelAsync(System.String,CancellationToken)">StopTunnelAsync(String, CancellationToken)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Stops a ngrok tunnel</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -383,7 +613,8 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>Name of the tunnel to stop</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">CancellationToken</span></td>
@@ -403,7 +634,8 @@
     <tbody>
       <tr>
         <td><span class="xref">Task</span>&lt;<span class="xref">HttpResponseMessage</span>&gt;</td>
-        <td></td>
+        <td><p>A httpResponseMessage that will contain 204 status code, if successful</p>
+</td>
       </tr>
     </tbody>
   </table>
