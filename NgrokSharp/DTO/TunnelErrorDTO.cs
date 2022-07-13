@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿#pragma warning disable CS1591
+using System.Text.Json.Serialization;
 
 namespace NgrokSharp.DTO
 {

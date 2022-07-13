@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable CS1591
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -36,9 +37,9 @@ namespace NgrokSharp
         private readonly Uri _ngrokDownloadUrl;
         private readonly Uri _ngrokLocalUrl;
         private readonly ILogger _logger;
-        private readonly PlatformStrategy _platformCode;
+        private PlatformStrategy _platformCode;
 
-        private readonly string _downloadFolder;
+        private string _downloadFolder;
 
         /// <summary>
         ///     Constructor for NgrokManager
@@ -120,6 +121,47 @@ namespace NgrokSharp
                 File.Delete($"{_downloadFolder}ngrok-stable-amd64.zip");
             }
         }
+        
+        /// <summary>
+        /// Sets the path to a directory that contains the Ngrok executable. Only use this method you don't wish NgrokSharp to manage the ngrok executable. <see cref="DownloadAndUnzipNgrokAsync"/>  
+        /// </summary>
+        /// <param name="pathToExecutable">Path to a directory that contains the Ngrok executable</param>
+        public void SetNgrokDirectory(string pathToExecutable)
+        {
+            //Detect OS and set Platform
+            if (OperatingSystem.IsWindows())
+            {
+                _platformCode = new PlatformWindows();
+            }
+
+            if (OperatingSystem.IsLinux())
+            {
+                _platformCode = new PlatformLinux();
+            }
+
+            _downloadFolder = pathToExecutable;
+        }
+        
+        /// <summary>
+        /// Sets the path to a directory that contains the Ngrok executable. Only use this method you don't wish NgrokSharp to manage the ngrok executable. <see cref="DownloadAndUnzipNgrokAsync"/>  
+        /// </summary>
+        /// <param name="pathToExecutable">Path to a directory that contains the Ngrok executable</param>
+        /// <param name="logger"></param>
+        public void SetNgrokDirectory(string pathToExecutable,ILogger logger)
+        {
+            //Detect OS and set Platform and Url
+            if (OperatingSystem.IsWindows())
+            {
+                _platformCode = new PlatformWindows(_logger);
+            }
+
+            if (OperatingSystem.IsLinux())
+            {
+                _platformCode = new PlatformLinux(_logger);
+            }
+            
+            _downloadFolder = pathToExecutable;
+        }
 
         /// <summary>
         ///     Registers your authtoken, if empty your sessions will be restricted to 2 hours.
@@ -176,6 +218,7 @@ namespace NgrokSharp
         ///     Starts a Ngrok tunnel
         /// </summary>
         /// <param name="startTunnelDto"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A httpResponseMessage that can be parse into TunnelDetailDTO</returns>
         /// <exception cref="ArgumentNullException">The input, can't be null</exception>
         /// <exception cref="ArgumentException">Missing values in input</exception>
@@ -204,6 +247,7 @@ namespace NgrokSharp
         ///     Stops a ngrok tunnel
         /// </summary>
         /// <param name="name">Name of the tunnel to stop</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A httpResponseMessage that will contain 204 status code, if successful</returns>
         public async Task<HttpResponseMessage> StopTunnelAsync(string name, CancellationToken cancellationToken = default)
         {
