@@ -1525,6 +1525,25 @@ references:
   isSpec: "True"
   fullName: NgrokSharp.INgrokManager.RegisterAuthTokenAsync
   nameWithType: INgrokManager.RegisterAuthTokenAsync
+- uid: NgrokSharp.INgrokManager.SetNgrokDirectory(System.String)
+  name: SetNgrokDirectory(String)
+  href: api/NgrokSharp.INgrokManager.html#NgrokSharp_INgrokManager_SetNgrokDirectory_System_String_
+  commentId: M:NgrokSharp.INgrokManager.SetNgrokDirectory(System.String)
+  fullName: NgrokSharp.INgrokManager.SetNgrokDirectory(System.String)
+  nameWithType: INgrokManager.SetNgrokDirectory(String)
+- uid: NgrokSharp.INgrokManager.SetNgrokDirectory(System.String,ILogger)
+  name: SetNgrokDirectory(String, ILogger)
+  href: api/NgrokSharp.INgrokManager.html#NgrokSharp_INgrokManager_SetNgrokDirectory_System_String_ILogger_
+  commentId: M:NgrokSharp.INgrokManager.SetNgrokDirectory(System.String,ILogger)
+  fullName: NgrokSharp.INgrokManager.SetNgrokDirectory(System.String, ILogger)
+  nameWithType: INgrokManager.SetNgrokDirectory(String, ILogger)
+- uid: NgrokSharp.INgrokManager.SetNgrokDirectory*
+  name: SetNgrokDirectory
+  href: api/NgrokSharp.INgrokManager.html#NgrokSharp_INgrokManager_SetNgrokDirectory_
+  commentId: Overload:NgrokSharp.INgrokManager.SetNgrokDirectory
+  isSpec: "True"
+  fullName: NgrokSharp.INgrokManager.SetNgrokDirectory
+  nameWithType: INgrokManager.SetNgrokDirectory
 - uid: NgrokSharp.INgrokManager.StartNgrok(NgrokSharp.NgrokManager.Region)
   name: StartNgrok(NgrokManager.Region)
   href: api/NgrokSharp.INgrokManager.html#NgrokSharp_INgrokManager_StartNgrok_NgrokSharp_NgrokManager_Region_
@@ -1801,6 +1820,25 @@ references:
   isSpec: "True"
   fullName: NgrokSharp.NgrokManager.RegisterAuthTokenAsync
   nameWithType: NgrokManager.RegisterAuthTokenAsync
+- uid: NgrokSharp.NgrokManager.SetNgrokDirectory(System.String)
+  name: SetNgrokDirectory(String)
+  href: api/NgrokSharp.NgrokManager.html#NgrokSharp_NgrokManager_SetNgrokDirectory_System_String_
+  commentId: M:NgrokSharp.NgrokManager.SetNgrokDirectory(System.String)
+  fullName: NgrokSharp.NgrokManager.SetNgrokDirectory(System.String)
+  nameWithType: NgrokManager.SetNgrokDirectory(String)
+- uid: NgrokSharp.NgrokManager.SetNgrokDirectory(System.String,ILogger)
+  name: SetNgrokDirectory(String, ILogger)
+  href: api/NgrokSharp.NgrokManager.html#NgrokSharp_NgrokManager_SetNgrokDirectory_System_String_ILogger_
+  commentId: M:NgrokSharp.NgrokManager.SetNgrokDirectory(System.String,ILogger)
+  fullName: NgrokSharp.NgrokManager.SetNgrokDirectory(System.String, ILogger)
+  nameWithType: NgrokManager.SetNgrokDirectory(String, ILogger)
+- uid: NgrokSharp.NgrokManager.SetNgrokDirectory*
+  name: SetNgrokDirectory
+  href: api/NgrokSharp.NgrokManager.html#NgrokSharp_NgrokManager_SetNgrokDirectory_
+  commentId: Overload:NgrokSharp.NgrokManager.SetNgrokDirectory
+  isSpec: "True"
+  fullName: NgrokSharp.NgrokManager.SetNgrokDirectory
+  nameWithType: NgrokManager.SetNgrokDirectory
 - uid: NgrokSharp.NgrokManager.StartNgrok(NgrokSharp.NgrokManager.Region)
   name: StartNgrok(NgrokManager.Region)
   href: api/NgrokSharp.NgrokManager.html#NgrokSharp_NgrokManager_StartNgrok_NgrokSharp_NgrokManager_Region_
