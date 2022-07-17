@@ -89,6 +89,35 @@ namespace NgrokSharp.Tests
         }
 
         [Fact]
+        public async Task StartNgrok_SetNgrokDirectory_True()
+        {
+            // ARRANGE
+            var random = new Random();
+            var customFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar}NgrokCus{random.Next().ToString()}{Path.DirectorySeparatorChar}";
+            
+            if (!Directory.Exists(customFolder))
+            {
+                Directory.CreateDirectory(customFolder);
+            }
+            File.WriteAllBytes($"{customFolder}ngrok-stable-amd64.zip", _ngrokBytes);
+
+            var fastZip = new FastZip();
+            fastZip.ExtractZip($"{customFolder}ngrok-stable-amd64.zip", customFolder, null);
+
+            var ngrokManager = new NgrokManager();
+            // ACT
+            ngrokManager.SetNgrokDirectory(customFolder);
+            ngrokManager.StartNgrok();
+            //Wait for ngrok to start, it can be slow on some systems.
+            Thread.Sleep(1000);
+
+            // ASSERT
+            var downloadedString = await HttpClient.GetStringAsync("http://localhost:4040/api/");
+
+            Assert.False(string.IsNullOrWhiteSpace(downloadedString));
+        }
+        
+        [Fact]
         public async Task StartTunnel_StartTunnel8080_True()
         {
             // ARRANGE

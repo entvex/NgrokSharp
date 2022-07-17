@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+#pragma warning disable CS1591
 
 namespace NgrokSharp.PlatformSpecific
 {

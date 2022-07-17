@@ -1,3 +1,4 @@
+#pragma warning disable CS1591
 namespace NgrokSharp.DTO;
 
 public class Headers

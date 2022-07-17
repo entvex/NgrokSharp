@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable CS1591
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,17 @@ namespace NgrokSharp
         /// <param name="region">DataCenter region</param>
         void StartNgrokWithLogging(NgrokManager.Region region = NgrokManager.Region.UnitedStates);
         /// <summary>
+        /// Sets the path to a directory that contains the Ngrok executable. Only use this method you don't wish NgrokSharp to manage the ngrok executable. <see cref="DownloadAndUnzipNgrokAsync"/>  
+        /// </summary>
+        /// <param name="pathToExecutable">Path to a directory that contains the Ngrok executable</param>
+        /// <param name="logger"></param>
+        void SetNgrokDirectory(string pathToExecutable, ILogger logger);
+        /// <summary>
+        /// Sets the path to a directory that contains the Ngrok executable. Only use this method you don't wish NgrokSharp to manage the ngrok executable. <see cref="DownloadAndUnzipNgrokAsync"/>  
+        /// </summary>
+        /// <param name="pathToExecutable">Path to a directory that contains the Ngrok executable</param>
+        void SetNgrokDirectory(string pathToExecutable);
+        /// <summary>
         ///     Stops Ngrok
         /// </summary>
         void StopNgrok();
@@ -33,6 +45,7 @@ namespace NgrokSharp
         ///     Starts a Ngrok tunnel
         /// </summary>
         /// <param name="startTunnelDto"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A httpResponseMessage that can be parse into TunnelDetailDTO</returns>
         /// <exception cref="ArgumentNullException">The input, can't be null</exception>
         /// <exception cref="ArgumentException">Missing values in input</exception>
@@ -41,6 +54,7 @@ namespace NgrokSharp
         ///     Stops a ngrok tunnel
         /// </summary>
         /// <param name="name">Name of the tunnel to stop</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>A httpResponseMessage that will contain 204 status code, if successful</returns>
         Task<HttpResponseMessage> StopTunnelAsync(string name, CancellationToken cancellationToken = default);
         /// <summary>

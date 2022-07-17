@@ -1,4 +1,5 @@
-﻿namespace NgrokSharp.DTO
+﻿#pragma warning disable CS1591
+namespace NgrokSharp.DTO
 {
     public class StartTunnelDTO
     {
