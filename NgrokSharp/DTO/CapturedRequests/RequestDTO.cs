@@ -1,7 +1,8 @@
 #pragma warning disable CS1591
 using System;
+#pragma warning disable CS8618
 
-namespace NgrokSharp.DTO;
+namespace NgrokSharp.DTO.CapturedRequests;
 
 public class RequestDTO
 {

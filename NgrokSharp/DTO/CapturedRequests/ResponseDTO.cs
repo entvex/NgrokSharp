@@ -1,5 +1,6 @@
+#pragma warning disable CS8618
 #pragma warning disable CS1591
-namespace NgrokSharp.DTO;
+namespace NgrokSharp.DTO.CapturedRequests;
 
 public class Response
 {

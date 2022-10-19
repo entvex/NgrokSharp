@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 using Microsoft.Extensions.Logging;
 using NgrokSharp.DTO;
+using NgrokSharp.DTO.CapturedRequests;
 using Xunit;
 
 namespace NgrokSharp.Tests
