@@ -1,11 +1,11 @@
+# No longer maintained
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![Coverage][coverage-shield]][coverage-url]
-[![Discord][discord-shield]][discord-url]
-
 
 
 <!-- PROJECT LOGO 
@@ -147,4 +147,3 @@ Thanks to these
 [coverage-shield]: https://img.shields.io/codecov/c/github/entvex/NgrokSharp/master?style=for-the-badge
 [coverage-url]: https://app.codecov.io/gh/entvex/NgrokSharp
 [discord-shield]: https://img.shields.io/discord/865308817172725770?style=for-the-badge
-[discord-url]: https://discord.gg/T3sarz6k5a
